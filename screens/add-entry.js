@@ -13,7 +13,7 @@ import {addEntry} from "../redux/actions/entries";
 class AddEntry extends React.Component {
     state = {
         id: generateID(),
-        category: this.props.categories[0].id,
+        category: this.props.categories.length >= 1 ? this.props.categories[0].id : 0,
         amount: 0,
         date: new Date()
     };
@@ -49,7 +49,8 @@ class AddEntry extends React.Component {
                         />
                         <Label>Category</Label>
                         <Picker note mode="dialog" selectedValue={this.state.category}
-                                onValueChange={(value) => this.changeState('category', value)}>
+                                onValueChange={(value) => this.changeState('category', value)}
+                                enabled={this.props.categories.length >= 1}>
 
                             {this.props.categories.map(category => (
                                 <Picker.Item key={category.id} label={category.title} value={category.id}/>
