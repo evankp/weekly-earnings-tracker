@@ -1,7 +1,7 @@
 import React from 'react'
 import {Text, View} from 'react-native'
 import {connect} from 'react-redux'
-import {Container, Icon, H1, H2, H3, Fab} from 'native-base';
+import {Container, Icon, H1, H2, H3, Toast} from 'native-base';
 import {IconButton, List} from "react-native-paper";
 
 import {StyledContent} from "../components/custom-styling";
@@ -26,6 +26,14 @@ const CategoryTitle = ({date}) => {
 };
 
 class Entries extends React.Component {
+    deleteEntry = (id) => {
+        this.props.dispatch(removeEntry(id));
+        Toast.show({
+            text: 'Entry deleted',
+            buttonText: 'Close'
+        })
+    };
+
     render() {
         return (
             <Container>
@@ -36,7 +44,7 @@ class Entries extends React.Component {
                                    title={<EntryAmountDate categories={this.props.categories} entry={entry} amount={entry.amount}/>}
                                    description={<CategoryTitle date={getPureDate(entry.date)}/>}
                                    style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                                   right={(props) => <IconButton icon='delete' onPress={() => this.props.dispatch(removeEntry(entry.id))}/>}
+                                   right={(props) => <IconButton icon='delete' onPress={() => this.deleteEntry(entry.id)} {...props}/>}
                         />
                     ))}
                 </StyledContent>
