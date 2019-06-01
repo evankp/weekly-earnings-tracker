@@ -2,6 +2,7 @@ import React from 'react'
 import {Container, Form, DatePicker, Label, Picker, Toast} from 'native-base';
 import {Button} from "react-native-paper";
 import {connect} from 'react-redux';
+import {DateTime} from 'luxon';
 
 import {StyledContent} from "../components/custom-styling";
 import * as Colors from '../utils/colors';
@@ -15,7 +16,7 @@ class AddEntry extends React.Component {
         id: generateID(),
         category: this.props.categories.length >= 1 ? this.props.categories[0].id : 0,
         amount: 0,
-        date: new Date()
+        date: DateTime.local()
     };
 
     changeState = (state, value) => {
@@ -45,7 +46,7 @@ class AddEntry extends React.Component {
                                 date.getDate(),
                                 date.getFullYear(),
                             ].join('/')}
-                            onDateChange={(date) => this.changeState('date', date)}
+                            onDateChange={(date) => this.changeState('date', DateTime.fromISO(date.toISOString()))}
                         />
                         <Label>Category</Label>
                         <Picker note mode="dialog" selectedValue={this.state.category}

@@ -7,6 +7,7 @@ import Categories from '../screens/categories';
 import EditCategory from '../screens/edit-category';
 import AddCategory from '../screens/add-category';
 import Entries from '../screens/entries';
+import WeekView from '../screens/week-view';
 
 // Drawer
 const DrawerNavigator = createDrawerNavigator({
@@ -16,6 +17,12 @@ const DrawerNavigator = createDrawerNavigator({
     screen: Entries,
     navigationOptions: {
       title: 'Entry History'
+    }
+  },
+  WeekView: {
+    screen: WeekView,
+    navigationOptions: {
+      title: 'Weekly Earnings'
     }
   }
 });
