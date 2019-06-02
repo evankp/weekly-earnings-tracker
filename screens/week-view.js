@@ -1,18 +1,34 @@
 import React from 'react'
-import {Text, View} from 'react-native'
-import {connect} from 'react-redux'
-import {Container, H1, H2, H3} from 'native-base';
+import {View} from 'react-native'
+import {Container, H2} from 'native-base';
+import {IconButton} from "react-native-paper";
 import {DateTime} from 'luxon';
 
-import {CenteredListItem, StyledContent} from "../components/custom-styling";
+import {StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
-import * as Colors from "../utils/colors";
-import {filterByDay, getWeeklyTotal, getWeekRange, sortByDate,} from "../utils/helpers";
+import {getWeekRange,} from "../utils/helpers";
+import WeekData from "../components/week-data";
 
-class WeekView extends React.Component {
+export default class WeekView extends React.Component {
+    state = {
+        weekDay: DateTime.local().startOf('week').toISO()
+    };
+
     getWeek = () => {
-        const {start, end} = getWeekRange();
+        const {start, end} = getWeekRange(this.state.weekDay);
         return `${start.toLocaleString()} - ${end.toLocaleString()}`
+    };
+
+    plusWeek = () => {
+        this.setState((state) => ({
+            weekDay: DateTime.fromISO(state.weekDay).plus({week: 1}).toISO()
+        }))
+    };
+
+    minusWeek = () => {
+        this.setState((state) => ({
+            weekDay: DateTime.fromISO(state.weekDay).minus({week: 1}).toISO()
+        }))
     };
 
     render() {
@@ -22,39 +38,16 @@ class WeekView extends React.Component {
             <Container>
                 <HeaderBar title="Weekly Earnings" navigation={navigation} addRoute="AddEntry"/>
                 <StyledContent>
-                    <H1 style={{textAlign: 'center', marginBottom: 20, fontWeight: 'bold'}}>
-                        {this.getWeek()}
-                    </H1>
-                    <H2 style={{textAlign: 'center', marginBottom: 10}}>${getWeeklyTotal(this.props.entries)}</H2>
-                    <Text style={{textAlign: 'center', marginBottom: 25, color: Colors.grey, fontSize: 19}}>
-                        {/* TODO: Allow change of the goal */}
-                        ${(500 - getWeeklyTotal(this.props.entries)).toFixed(2)} left
-                    </Text>
-                    <H3 style={{textAlign: 'center', fontWeight: 'bold', marginBottom: 15}}>Earnings Per Day</H3>
-
-                    {this.props.entries.length === 0 && (
-                        <Text style={{textAlign: 'center'}}>No current earnings for the week</Text>
-                    )}
-                    <View>
-                        {this.props.entries.map((entry, index) => (
-                            <CenteredListItem key={entry.date}
-                                              title={entry.amount.toFixed(2)}
-                                              description={DateTime.fromISO(entry.date).toLocaleString()}
-                                              style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                            />
-                        ))}
+                    <View style={{flexDirection: 'row', marginBottom: 20, alignItems: 'center', justifyContent: 'center'}}>
+                        <IconButton icon="keyboard-arrow-left" onPress={this.minusWeek} size={28}/>
+                        <H2 style={{textAlign: 'center', fontWeight: 'bold'}}>
+                            {this.getWeek()}
+                        </H2>
+                        <IconButton icon="keyboard-arrow-right" onPress={this.plusWeek} size={28}/>
                     </View>
+                    <WeekData week={this.state.weekDay}/>
                 </StyledContent>
             </Container>
         )
     }
 }
-
-function mapStateToProps({categories, entries}) {
-    return {
-        categories,
-        entries: sortByDate(filterByDay(entries), false)
-    }
-}
-
-export default connect(mapStateToProps)(WeekView)

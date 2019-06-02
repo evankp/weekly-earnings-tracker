@@ -9,13 +9,13 @@ export function getDay(date) {
     return DateTime.fromISO(date).startOf('day')
 }
 
-export function getWeekRange(customWeek = null, timestamp = false) {
+export function getWeekRange(customWeek = null) {
     let start,
         end;
 
     if (customWeek !== null) {
-        start = DateTime.local(customWeek).startOf('week');
-        end = DateTime.local(customWeek).endOf('week');
+        start = DateTime.fromISO(customWeek).startOf('week');
+        end = DateTime.fromISO(customWeek).endOf('week');
     } else {
         start = DateTime.local().startOf('week');
         end = DateTime.local().endOf('week');
@@ -24,8 +24,8 @@ export function getWeekRange(customWeek = null, timestamp = false) {
     return {start, end}
 }
 
-export function filterByWeek(data) {
-    const {start, end} = getWeekRange();
+export function filterByWeek(data, customWeek = null) {
+    const {start, end} = getWeekRange(customWeek);
 
     return data.filter(item => {
         const itemDate = DateTime.fromISO(item.date).valueOf();
