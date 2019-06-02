@@ -2,12 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import {TextInput} from "react-native-paper";
 
-import * as Colors from "../utils/colors";
-
 export default class NumberInput extends React.Component {
     static defaultProps = {
         step: 1,
-        negative: true
+        negative: true,
+        value: 0
     };
 
     static propTypes = {
@@ -17,11 +16,12 @@ export default class NumberInput extends React.Component {
         onSubmit: PropTypes.func,
         style: PropTypes.object,
         mode: PropTypes.string,
-        label: PropTypes.string
+        label: PropTypes.string,
+        value: PropTypes.number
     };
 
     state = {
-        value: '0',
+        value: String(this.props.value),
     };
 
     onChange = (value) => {

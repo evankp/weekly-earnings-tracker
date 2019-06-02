@@ -1,7 +1,7 @@
 import React from 'react'
-import {Text} from 'react-native'
-import {Container, Header, Content, Left, Body, Right, Title, Button, Icon} from 'native-base';
+import {Body, Button, Header, Icon, Left, Right, Title} from 'native-base';
 import PropTypes from 'prop-types'
+import includes from 'lodash/includes'
 
 import * as Colors from '../utils/colors'
 
@@ -9,28 +9,32 @@ export default class HeaderBar extends React.Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
         navigation: PropTypes.object.isRequired,
-        actionButton: PropTypes.element,
+        addRoute: PropTypes.string,
         leftBack: PropTypes.bool
     };
 
     render() {
-        const {openDrawer, goBack} = this.props.navigation;
+        const {navigation} = this.props;
 
         return (
             <Header style={{backgroundColor: Colors.black}}>
                 <Left>
-                    <Button transparent onPress={() => this.props.leftBack ? goBack() : openDrawer()}>
-                        <Icon name={this.props.leftBack ? 'arrow-back' : 'menu'}/>
-                    </Button>
+                    {this.props.leftBack && (
+                        <Button transparent onPress={() => navigation.goBack()}>
+                            <Icon name="arrow-back"/>
+                        </Button>
+                    )}
                 </Left>
 
                 <Body>
-                    <Title>{this.props.title}</Title>
+                <Title>{this.props.title}</Title>
                 </Body>
 
-                {this.props.actionButton && (
+                {!(includes(['AddEntry', 'EditCategory', 'AddCategory'], navigation.state.routeName)) && (
                     <Right>
-                        {this.props.actionButton}
+                        <Button onPress={() => navigation.navigate(this.props.addRoute)} transparent>
+                            <Icon name="plus" type="MaterialCommunityIcons" style={{fontSize: 25}}/>
+                        </Button>
                     </Right>
                 )}
             </Header>

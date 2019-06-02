@@ -8,15 +8,11 @@ import {StyledContent} from "../components/custom-styling";
 import * as Colors from '../utils/colors';
 import HeaderBar from '../components/header-bar';
 import NumberInput from "../components/number-input";
-import {generateID} from "../utils/helpers";
-import {addEntry} from "../redux/actions/entries";
+import {editEntry} from "../redux/actions/entries";
 
-class AddEntry extends React.Component {
+class EditEntry extends React.Component {
     state = {
-        id: generateID(),
-        category: this.props.categories.length >= 1 ? this.props.categories[0].id : 0,
-        amount: 0,
-        date: DateTime.local()
+        ...this.props.entry
     };
 
     changeState = (state, value) => {
@@ -24,10 +20,10 @@ class AddEntry extends React.Component {
     };
 
     submit = () => {
-        this.props.dispatch(addEntry(this.state));
+        this.props.dispatch(editEntry(this.props.entry.id, this.state));
         this.props.navigation.goBack();
         Toast.show({
-            text: 'Entry added',
+            text: 'Entry Edited',
             buttonText: 'Close'
         })
     };
@@ -35,12 +31,12 @@ class AddEntry extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Add Entry" navigation={this.props.navigation} leftBack/>
+                <HeaderBar title="Edit Entry" navigation={this.props.navigation} leftBack/>
                 <StyledContent>
                     <Form>
                         <Label>Date</Label>
                         <DatePicker
-                            defaultDate={new Date()}
+                            defaultDate={new Date(this.props.entry.date)}
                             formatChosenDate={(date) => [
                                 date.getMonth() + 1,
                                 date.getDate(),
@@ -58,7 +54,7 @@ class AddEntry extends React.Component {
                             ))}
                         </Picker>
                         <Label>Amount</Label>
-                        <NumberInput negative={false} onChange={(value) => this.changeState('amount', value)}
+                        <NumberInput negative={false} value={this.state.amount} onChange={(value) => this.changeState('amount', value)}
                                      mode="outlined" style={{marginBottom: 20}}/>
 
                         <Button mode="contained" color={Colors.black} onPress={this.submit}
@@ -70,9 +66,13 @@ class AddEntry extends React.Component {
     }
 }
 
-function mapStateToProps({categories}) {
+function mapStateToProps({categories, entries}, ownProps) {
+    const {id} = ownProps.navigation.state.params;
+
     return {
+        entry: entries.find(entry => entry.id === id),
         categories
     }
 }
-export default connect(mapStateToProps)(AddEntry)
+
+export default connect(mapStateToProps)(EditEntry)

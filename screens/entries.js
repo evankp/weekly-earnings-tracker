@@ -1,14 +1,14 @@
 import React from 'react'
 import {Text, View} from 'react-native'
 import {connect} from 'react-redux'
-import {Container, Icon, H1, H2, H3, Toast, Fab} from 'native-base';
+import {Container, Toast} from 'native-base';
 import {IconButton, List} from "react-native-paper";
 import {DateTime} from 'luxon';
 
 import {StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import * as Colors from "../utils/colors";
-import {getCategoryTotal, getDailyTotal, getWeeklyTotal, sortByDate} from "../utils/helpers";
+import {sortByDate} from "../utils/helpers";
 import {removeEntry} from "../redux/actions/entries";
 
 const EntryAmountDate = ({categories, entry, amount}) => {
@@ -25,6 +25,15 @@ const CategoryTitle = ({date}) => {
     )
 };
 
+const EntryButtons = ({navigation, entry, deleteEntry, ...props}) => {
+    return (
+        <View style={{flexDirection: 'row'}}>
+            <IconButton icon='edit' onPress={() => navigation.navigate('EditEntry', {id: entry.id})}/>
+            <IconButton icon='delete' onPress={() => deleteEntry(entry.id)}/>
+        </View>
+    )
+};
+
 class Entries extends React.Component {
     deleteEntry = (id) => {
         this.props.dispatch(removeEntry(id));
@@ -35,10 +44,9 @@ class Entries extends React.Component {
     };
 
     render() {
-        const {navigation} = this.props;
         return (
             <Container>
-                <HeaderBar title="Entry History" navigation={this.props.navigation}/>
+                <HeaderBar title="Entry History" navigation={this.props.navigation} addRoute="AddEntry"/>
                 <StyledContent>
                     {this.props.entries.length === 0 && (
                         <Text style={{textAlign: 'center'}}>
@@ -47,18 +55,15 @@ class Entries extends React.Component {
                     )}
                     {this.props.entries.map((entry, index) => (
                         <List.Item key={entry.id}
-                                   title={<EntryAmountDate categories={this.props.categories} entry={entry} amount={entry.amount}/>}
+                                   title={<EntryAmountDate categories={this.props.categories} entry={entry}
+                                                           amount={entry.amount}/>}
                                    description={<CategoryTitle date={DateTime.fromISO(entry.date)}/>}
                                    style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                                   right={(props) => <IconButton icon='delete' onPress={() => this.deleteEntry(entry.id)} {...props}/>}
+                                   right={(props) => <EntryButtons navigation={this.props.navigation}
+                                                                   entry={entry} deleteEntry={this.deleteEntry} {...props}/>}
                         />
                     ))}
                 </StyledContent>
-                <Fab active={true}
-                         onPress={() => navigation.navigate('AddEntry')}
-                         style={{backgroundColor: Colors.black}}>
-                        <Icon name="add" type="MaterialIcons"/>
-                    </Fab>
             </Container>
         )
     }

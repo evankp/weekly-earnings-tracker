@@ -1,13 +1,12 @@
 import React from 'react'
-import {View} from 'react-native'
+import {Text, View} from 'react-native'
 import {connect} from 'react-redux'
-import {Container, Icon, H1, Toast, Fab} from 'native-base';
-import {List, IconButton} from "react-native-paper";
+import {Container, Toast} from 'native-base';
+import {IconButton, List} from "react-native-paper";
 
 import {StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import {removeCategory} from "../redux/actions/categories";
-import * as Colors from '../utils/colors'
 import {clearCategory} from "../redux/actions/entries";
 
 const ListButtons = (props) => {
@@ -36,8 +35,11 @@ class Categories extends React.Component {
 
         return (
             <Container>
-                <HeaderBar title="Categories" navigation={navigation}/>
+                <HeaderBar title="Categories" navigation={navigation} addRoute="AddCategory"/>
                 <StyledContent>
+                    {this.props.categories.length === 0 && (
+                        <Text style={{textAlign: 'center'}}>No Categories</Text>
+                    )}
                     {this.props.categories.map(category => (
                         <List.Item key={category.id} title={category.title}
                                    right={(props) => <ListButtons category={category}
@@ -46,11 +48,6 @@ class Categories extends React.Component {
                                                                   {...props}/>}/>
                     ))}
                 </StyledContent>
-                <Fab active={true}
-                     onPress={() => navigation.navigate('AddCategory')}
-                     style={{backgroundColor: Colors.black}}>
-                    <Icon name="add" type="MaterialIcons"/>
-                </Fab>
             </Container>
         )
     }

@@ -1,4 +1,4 @@
-import {ADD_ENTRY, CLEAR_CATEGORY, REMOVE_ENTRY} from "../actions/entries";
+import {ADD_ENTRY, CLEAR_CATEGORY, EDIT_ENTRY, REMOVE_ENTRY} from "../actions/entries";
 
 export default function (state = [], action) {
     switch (action.type) {
@@ -10,6 +10,9 @@ export default function (state = [], action) {
 
         case REMOVE_ENTRY:
             return state.filter(entry => entry.id !== action.id);
+
+        case EDIT_ENTRY:
+            return state.map(entry => entry.id === action.id ? action.entry: entry);
 
         case CLEAR_CATEGORY:
             return state.filter(entry => entry.category !== action.id);

@@ -1,15 +1,13 @@
 import React from 'react'
 import {Text, View} from 'react-native'
 import {connect} from 'react-redux'
-import Styled from 'styled-components';
-import {Container, Icon, H1, H2, H3, Fab} from 'native-base';
-import {List} from "react-native-paper";
+import {Container, H1, H2, H3} from 'native-base';
 import {DateTime} from 'luxon';
 
-import {StyledContent, CenteredListItem} from "../components/custom-styling";
+import {CenteredListItem, StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import * as Colors from "../utils/colors";
-import {getCategoryTotal, getDailyTotal, getWeekRange} from "../utils/helpers";
+import {getCategoryTotal, getDailyTotal} from "../utils/helpers";
 
 class Home extends React.Component {
     render() {
@@ -18,7 +16,7 @@ class Home extends React.Component {
 
         return (
             <Container>
-                <HeaderBar title="Today's Earnings" navigation={navigation}/>
+                <HeaderBar title="Today's Earnings" navigation={navigation} addRoute="AddEntry"/>
                 <StyledContent>
                     <H1 style={{textAlign: 'center', marginBottom: 20, fontWeight: 'bold'}}>
                         {today.toLocaleString()}
@@ -30,9 +28,7 @@ class Home extends React.Component {
                     <H3 style={{textAlign: 'center', fontWeight: 'bold', marginBottom: 15}}>Categories</H3>
 
                     {this.props.categories.length === 0 && (
-                        <View>
-                            <Text>No current Categories</Text>
-                        </View>
+                        <Text style={{textAlign: 'center'}}>No current Categories</Text>
                     )}
                     {this.props.categories.length > 0 && (
                         <View>
@@ -46,14 +42,6 @@ class Home extends React.Component {
                         </View>
                     )}
                 </StyledContent>
-
-                {this.props.categories.length >= 1 && (
-                    <Fab active={true}
-                         onPress={() => navigation.navigate('AddEntry')}
-                         style={{backgroundColor: Colors.black}}>
-                        <Icon name="add" type="MaterialIcons"/>
-                    </Fab>
-                )}
             </Container>
         )
     }
