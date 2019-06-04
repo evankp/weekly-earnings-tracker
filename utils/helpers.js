@@ -34,7 +34,8 @@ export function filterByWeek(data, customWeek = null) {
 }
 
 export function getWeeklyTotal(data) {
-    const weeklyEntries = filterByWeek(data);
+    const dataWeek = data.length > 0 ? DateTime.fromISO(data[0].date).startOf('week').toISO() : null;
+    const weeklyEntries = filterByWeek(data, dataWeek);
 
     return weeklyEntries.reduce((a, b) => a + b.amount, 0).toFixed(2)
 }

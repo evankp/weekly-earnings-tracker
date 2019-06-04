@@ -16,13 +16,17 @@ class WeekData extends React.Component {
     };
 
     render() {
+        const goalProgress = (this.props.goal - getWeeklyTotal(this.props.entries)).toFixed(2);
+
         return (
             <View>
                 <H2 style={{textAlign: 'center', marginBottom: 10}}>${getWeeklyTotal(this.props.entries)}</H2>
-                <Text style={{textAlign: 'center', marginBottom: 25, color: Colors.grey, fontSize: 19}}>
-                    {/* TODO: Allow change of the goal */}
-                    ${(500 - getWeeklyTotal(this.props.entries)).toFixed(2)} left
-                </Text>
+                {this.props.goal !== 0 && (
+                    <Text style={{textAlign: 'center', marginBottom: 25, color: Colors.grey, fontSize: 19}}>
+                        {/* TODO: Allow change of the goal */}
+                        ${goalProgress >= 0 ? `${goalProgress} left` : `${goalProgress * -1} over`}
+                    </Text>
+                )}
                 <H3 style={{textAlign: 'center', fontWeight: 'bold', marginBottom: 15}}>Earnings Per Day</H3>
 
                 {this.props.entries.length === 0 && (
@@ -42,13 +46,14 @@ class WeekData extends React.Component {
     }
 }
 
-function mapStateToProps({categories, entries}, {week}) {
+function mapStateToProps({categories, entries, settings}, {week}) {
     const weekData = filterByWeek(entries, week);
     const filteredData = filterByDay(weekData);
 
     return {
         categories,
-        entries: sortByDate(filteredData, false)
+        entries: sortByDate(filteredData, false),
+        goal: settings.goals.weekly
     }
 }
 

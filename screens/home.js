@@ -13,6 +13,7 @@ class Home extends React.Component {
     render() {
         const {navigation} = this.props;
         const today = DateTime.local();
+        const goalProgress = (this.props.goal - getDailyTotal(today, this.props.entries)).toFixed(2);
 
         return (
             <Container>
@@ -25,6 +26,12 @@ class Home extends React.Component {
                         textAlign: 'center',
                         marginBottom: 20
                     }}>${getDailyTotal(today, this.props.entries)}</H2>
+                    {this.props.goal !== 0 && (
+                        <Text style={{textAlign: 'center', marginBottom: 25, color: Colors.grey, fontSize: 19}}>
+                            {/* TODO: Allow change of the goal */}
+                            ${goalProgress >= 0 ? `${goalProgress} left` : `${goalProgress * -1} over`}
+                        </Text>
+                    )}
                     <H3 style={{textAlign: 'center', fontWeight: 'bold', marginBottom: 15}}>Categories</H3>
 
                     {this.props.categories.length === 0 && (
@@ -47,10 +54,11 @@ class Home extends React.Component {
     }
 }
 
-function mapStateToProps({categories, entries}) {
+function mapStateToProps({categories, entries, settings}) {
     return {
         categories,
-        entries
+        entries,
+        goal: settings.goals.daily
     }
 }
 

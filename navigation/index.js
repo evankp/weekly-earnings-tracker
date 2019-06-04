@@ -11,6 +11,8 @@ import EditEntry from '../screens/edit-entry';
 import AddCategory from '../screens/add-category';
 import Entries from '../screens/entries';
 import WeekView from '../screens/week-view';
+import Settings from '../screens/settings';
+import Goals from '../screens/goals'
 
 // Drawer
 const BottomTabNavigator = createBottomTabNavigator({
@@ -18,19 +20,19 @@ const BottomTabNavigator = createBottomTabNavigator({
         screen: Home,
 
     },
-    Categories: Categories,
+    WeekView: {
+        screen: WeekView,
+        navigationOptions: {
+            title: 'Week'
+        }
+    },
     Entries: {
         screen: Entries,
         navigationOptions: {
             title: 'Entry History'
         }
     },
-    WeekView: {
-        screen: WeekView,
-        navigationOptions: {
-            title: 'Week'
-        }
-    }
+    Settings: Settings
 }, {
     tabBarOptions: {
         tabStyle: {
@@ -48,9 +50,8 @@ const BottomTabNavigator = createBottomTabNavigator({
                     iconName = focused ? 'home' : 'home-outline';
                     break;
 
-                case 'Categories':
-                    iconName = focused ? 'folder-multiple': 'folder-multiple-outline';
-                    fontSize = 21;
+                case 'Settings':
+                    iconName = focused ? 'settings' : 'settings-outline';
                     break;
 
                 case 'Entries':
@@ -76,7 +77,9 @@ export default createAppContainer(createStackNavigator({
     AddEntry: AddEntry,
     EditCategory: EditCategory,
     AddCategory: AddCategory,
-    EditEntry: EditEntry
+    EditEntry: EditEntry,
+    Categories: Categories,
+    Goals: Goals
 }, {
     defaultNavigationOptions: {
         header: null

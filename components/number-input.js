@@ -6,7 +6,8 @@ export default class NumberInput extends React.Component {
     static defaultProps = {
         step: 1,
         negative: true,
-        value: 0
+        value: 0,
+        mode: 'outlined'
     };
 
     static propTypes = {

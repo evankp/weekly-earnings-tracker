@@ -35,7 +35,7 @@ class Categories extends React.Component {
 
         return (
             <Container>
-                <HeaderBar title="Categories" navigation={navigation} addRoute="AddCategory"/>
+                <HeaderBar title="Categories" navigation={navigation} addRoute="AddCategory" leftBack/>
                 <StyledContent>
                     {this.props.categories.length === 0 && (
                         <Text style={{textAlign: 'center'}}>No Categories</Text>
