@@ -3,36 +3,27 @@ import {createAppContainer, createBottomTabNavigator, createStackNavigator} from
 import {Icon} from "native-base";
 
 // Screens
-import Home from '../screens/home';
-import AddEntry from '../screens/add-entry';
-import Categories from '../screens/categories';
-import EditCategory from '../screens/edit-category';
-import EditEntry from '../screens/edit-entry';
-import AddCategory from '../screens/add-category';
-import Entries from '../screens/entries';
-import WeekView from '../screens/week-view';
-import Settings from '../screens/settings';
-import Goals from '../screens/goals'
+import * as Screens from '../screens'
 
 // Drawer
 const BottomTabNavigator = createBottomTabNavigator({
     Home: {
-        screen: Home,
+        screen: Screens.Home,
 
     },
     WeekView: {
-        screen: WeekView,
+        screen: Screens.WeekView,
         navigationOptions: {
             title: 'Week'
         }
     },
     Entries: {
-        screen: Entries,
+        screen: Screens.Entries,
         navigationOptions: {
             title: 'Entry History'
         }
     },
-    Settings: Settings
+    Settings: Screens.Settings
 }, {
     tabBarOptions: {
         tabStyle: {
@@ -74,12 +65,13 @@ const BottomTabNavigator = createBottomTabNavigator({
 // Stack Navigator for non-drawer items
 export default createAppContainer(createStackNavigator({
     Main: BottomTabNavigator,
-    AddEntry: AddEntry,
-    EditCategory: EditCategory,
-    AddCategory: AddCategory,
-    EditEntry: EditEntry,
-    Categories: Categories,
-    Goals: Goals
+    AddEntry: Screens.AddEntry,
+    EditCategory: Screens.EditCategory,
+    AddCategory: Screens.AddCategory,
+    EditEntry: Screens.EditEntry,
+    Categories: Screens.Categories,
+    Goals: Screens.Goals,
+    DayView: Screens.DayView
 }, {
     defaultNavigationOptions: {
         header: null

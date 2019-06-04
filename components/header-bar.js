@@ -30,7 +30,7 @@ export default class HeaderBar extends React.Component {
                 <Title>{this.props.title}</Title>
                 </Body>
 
-                {!(includes(['AddEntry', 'EditCategory', 'AddCategory', 'Settings', 'Goals'], navigation.state.routeName)) && (
+                {!(includes(['AddEntry', 'EditCategory', 'AddCategory', 'Settings', 'Goals', 'DayView'], navigation.state.routeName)) && (
                     <Right>
                         <Button onPress={() => navigation.navigate(this.props.addRoute)} transparent>
                             <Icon name="plus" type="MaterialCommunityIcons" style={{fontSize: 25}}/>

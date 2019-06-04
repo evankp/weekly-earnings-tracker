@@ -2,9 +2,10 @@ import React from 'react';
 import {H2, H3} from "native-base";
 import {DateTime} from "luxon";
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types'
+import {withNavigation} from 'react-navigation';
+import PropTypes from 'prop-types';
 
-import {filterByDay, filterByWeek, getWeeklyTotal, sortByDate} from "../utils/helpers";
+import {filterAndJoinByDay, filterByWeek, getWeeklyTotal, sortByDate} from "../utils/helpers";
 import {Text, View} from "react-native";
 import * as Colors from "../utils/colors";
 import {CenteredListItem} from "./custom-styling";
@@ -23,7 +24,6 @@ class WeekData extends React.Component {
                 <H2 style={{textAlign: 'center', marginBottom: 10}}>${getWeeklyTotal(this.props.entries)}</H2>
                 {this.props.goal !== 0 && (
                     <Text style={{textAlign: 'center', marginBottom: 25, color: Colors.grey, fontSize: 19}}>
-                        {/* TODO: Allow change of the goal */}
                         ${goalProgress >= 0 ? `${goalProgress} left` : `${goalProgress * -1} over`}
                     </Text>
                 )}
@@ -38,6 +38,7 @@ class WeekData extends React.Component {
                                           title={entry.amount.toFixed(2)}
                                           description={DateTime.fromISO(entry.date).toLocaleString()}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
+                                          onPress={() => this.props.navigation.navigate('DayView', {date: entry.date})}
                         />
                     ))}
                 </View>
@@ -48,7 +49,7 @@ class WeekData extends React.Component {
 
 function mapStateToProps({categories, entries, settings}, {week}) {
     const weekData = filterByWeek(entries, week);
-    const filteredData = filterByDay(weekData);
+    const filteredData = filterAndJoinByDay(weekData);
 
     return {
         categories,
@@ -57,4 +58,4 @@ function mapStateToProps({categories, entries, settings}, {week}) {
     }
 }
 
-export default connect(mapStateToProps)(WeekData)
+export default withNavigation(connect(mapStateToProps)(WeekData))

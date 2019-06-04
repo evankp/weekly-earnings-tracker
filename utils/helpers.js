@@ -40,23 +40,27 @@ export function getWeeklyTotal(data) {
     return weeklyEntries.reduce((a, b) => a + b.amount, 0).toFixed(2)
 }
 
-export function getCategoryTotal(id, entries) {
-    const today = DateTime.local();
+export function getCategoryTotal(id, entries, customWeek = null) {
+    const day = customWeek ? DateTime.fromISO(customWeek) : DateTime.local();
 
     const earningsCategory = entries.filter(listing => (
-        (listing.category === id) && (getDay(listing.date).valueOf() === today.startOf('day').valueOf())
+        (listing.category === id) && (getDay(listing.date).valueOf() === day.startOf('day').valueOf())
     ));
 
     return earningsCategory.reduce((a, b) => a + b.amount, 0).toFixed(2)
 }
 
 export function getDailyTotal(date, entries) {
-    const earningsDay = entries.filter(entry => DateTime.fromISO(entry.date).hasSame(date, 'day'));
+    const earningsDay = filterByDay(date, entries);
 
     return earningsDay.reduce((a, b) => a + b.amount, 0).toFixed(2)
 }
 
-export let filterByDay = _.flow([
+export function filterByDay(date, entries) {
+    return entries.filter(entry => DateTime.fromISO(entry.date).hasSame(date, 'day'))
+}
+
+export const filterAndJoinByDay = _.flow([
     (object) => _.groupBy(object, (iteratee) => DateTime.fromISO(iteratee.date).startOf('day')),
     (collection) => _.map(collection, (obj) => {
         const amount = obj.reduce((a, b) => a + b.amount, 0);
