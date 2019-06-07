@@ -7,7 +7,7 @@ import {DateTime} from 'luxon';
 import {StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import {getWeekRange,} from "../utils/helpers";
-import WeekData from "../components/week-data";
+import SummeryView from "../components/summery-view";
 
 export default class WeekView extends React.Component {
     state = {
@@ -45,7 +45,7 @@ export default class WeekView extends React.Component {
                         </H2>
                         <IconButton icon="keyboard-arrow-right" onPress={this.plusWeek} size={28}/>
                     </View>
-                    <WeekData week={this.state.weekDay}/>
+                    <SummeryView week={this.state.weekDay} summeryType="weekly" navigation={navigation}/>
                 </StyledContent>
             </Container>
         )
