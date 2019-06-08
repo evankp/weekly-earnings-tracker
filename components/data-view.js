@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from "react-native";
+import {View, ScrollView} from "react-native";
 import {DateTime} from "luxon";
 import PropTypes from "prop-types";
 import {CenteredListItem} from "./custom-styling";
@@ -10,7 +10,7 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
     switch (summeryType) {
         case 'today':
             return (
-                <View>
+                <ScrollView style={{height: 428}}>
                     {categories.map((category, index) => (
                         <CenteredListItem key={category.id}
                                           title={getCategoryTotal(category.id, entries)}
@@ -18,12 +18,12 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
                         />
                     ))}
-                </View>
+                </ScrollView>
             );
 
         case 'daily':
             return (
-                <View>
+                <ScrollView style={{height: 428}}>
                     {categories.map((category, index) => (
                         <CenteredListItem key={category.id}
                                           title={getCategoryTotal(category.id, entries, entries[0].date)}
@@ -31,12 +31,12 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
                         />
                     ))}
-                </View>
+                </ScrollView>
             );
 
         case 'weekly':
             return (
-                <View>
+                <ScrollView style={{height: 428}}>
                     {entries.map((entry, index) => (
                         <CenteredListItem key={entry.date}
                                           title={entry.amount.toFixed(2)}
@@ -45,7 +45,7 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           onLongPress={() => navigation.navigate('DayView', {date: entry.date})}
                         />
                     ))}
-                </View>
+                </ScrollView>
             )
     }
 };
