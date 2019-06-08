@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {Content, H1, H2, H3, Button} from "native-base";
+import PropTypes from 'prop-types'
 import Styled from 'styled-components';
 
 import * as Colors from '../utils/colors'
@@ -58,3 +59,18 @@ export const SummerySubtitle = Styled(H3)`
 export const CenteredText = Styled(Text)`
     text-align: center;
 `;
+
+export const TextButton = (props) => {
+    const centeredTextStyle = props.centeredText ? {textAlign: 'center'} : null;
+
+    return (
+        <TouchableOpacity {...props}>
+            <Text style={[{fontWeight: 'bold', color: props.color}, centeredTextStyle]}>{props.children}</Text>
+        </TouchableOpacity>
+    )
+};
+
+TextButton.propTypes = {
+    centeredText: PropTypes.bool,
+    color: PropTypes.string
+};
