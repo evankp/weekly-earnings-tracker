@@ -1,18 +1,13 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
-import {Content, H1, H2, H3, Button} from "native-base";
+import {Platform, Text, TouchableNativeFeedback, TouchableOpacity, View} from 'react-native';
+import {Content, H2, H3} from "native-base";
 import PropTypes from 'prop-types'
 import Styled from 'styled-components';
 
-import * as Colors from '../utils/colors'
+import * as Colors from '../utils/colors';
 
 export const StyledContent = Styled(Content)`
     margin: 20px 15px;
-`;
-
-const CenteredItemButton = Styled(TouchableOpacity)`
-   align-items: center;
-   padding: 15px;
 `;
 
 const CenteredItemView = Styled(View)`
@@ -20,13 +15,17 @@ const CenteredItemView = Styled(View)`
    padding: 15px;
 `;
 
-export const CenteredListItem = ({title, description, style, onPress}) => {
-    if (onPress) {
+const TouchableNative = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+
+export const CenteredListItem = ({title, description, style, onLongPress}) => {
+    if (onLongPress) {
         return (
-            <CenteredItemButton style={style} onPress={onPress}>
-                <H3>${title}</H3>
-                <Text style={{fontWeight: '100', color: Colors.grey}}>{description}</Text>
-            </CenteredItemButton>
+            <TouchableNative onLongPress={onLongPress}>
+                <View style={[{alignItems: 'center', padding: 15}, style]}>
+                    <H3>${title}</H3>
+                    <Text style={{fontWeight: '100', color: Colors.grey}}>{description}</Text>
+                </View>
+            </TouchableNative>
         )
     }
 

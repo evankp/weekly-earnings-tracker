@@ -42,7 +42,7 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           title={entry.amount.toFixed(2)}
                                           description={DateTime.fromISO(entry.date).toLocaleString()}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                                          onPress={() => navigation.navigate('DayView', {date: entry.date})}
+                                          onLongPress={() => navigation.navigate('DayView', {date: entry.date})}
                         />
                     ))}
                 </View>
