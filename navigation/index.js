@@ -74,7 +74,8 @@ export default createAppContainer(createStackNavigator({
     EditEntry: Screens.EditEntry,
     Categories: Screens.Categories,
     Goals: Screens.Goals,
-    DayView: Screens.DayView
+    DayView: Screens.DayView,
+    CategorySummery: Screens.CategorySummery
 }, {
     defaultNavigationOptions: {
         header: null

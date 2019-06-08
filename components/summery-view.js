@@ -8,7 +8,7 @@ import DataView from './data-view';
 import {
     filterAndJoinByDay,
     filterByDay,
-    filterByWeek,
+    filterByWeek, getCategoryTotal,
     getDailyTotal,
     getWeeklyTotal,
     sortByDate
@@ -18,25 +18,35 @@ import {CenteredText, SummeryGoal, SummerySubtitle, SummeryTotal} from "./custom
 class SummeryView extends React.Component {
     static propTypes = {
         week: PropTypes.string,
-        summeryType: PropTypes.oneOf(['daily', 'weekly', 'today']).isRequired,
-        navigation: PropTypes.object.isRequired
+        summeryType: PropTypes.oneOf(['daily', 'weekly', 'today', 'category']).isRequired,
+        navigation: PropTypes.object.isRequired,
+        categoryID: PropTypes.string
+    };
+
+    getTotal = () => {
+        const {navigation: {state: {params}}} = this.props;
+        switch (this.props.summeryType) {
+            case 'weekly':
+                return getWeeklyTotal(this.props.entries);
+
+            case 'today':
+                return getDailyTotal(DateTime.local(), this.props.entries);
+
+            case 'daily':
+                return getDailyTotal(DateTime.fromISO(params.date), this.props.entries);
+
+            case 'category':
+                return getCategoryTotal(this.props.categoryID, this.props.entries);
+        }
     };
 
     render() {
-        const {navigation: {state: {params}}} = this.props;
-
-        const total = this.props.summeryType === 'weekly'
-            ? getWeeklyTotal(this.props.entries)
-            : this.props.summeryType === 'today'
-                ? getDailyTotal(DateTime.local(), this.props.entries)
-                : getDailyTotal(DateTime.fromISO(params.date), this.props.entries);
-
-        const goalProgress = (this.props.goal - total).toFixed(2);
+        const goalProgress = this.props.summeryType !== 'category' ? (this.props.goal - this.getTotal()).toFixed(2) : null;
 
         return (
             <View>
-                <SummeryTotal>${total}</SummeryTotal>
-                {this.props.goal !== 0 && (
+                <SummeryTotal>${this.getTotal()}</SummeryTotal>
+                {(this.props.summeryType !== 'category' && this.props.goal !== 0) && (
                     <SummeryGoal>
                         ${goalProgress >= 0 ? `${goalProgress} left` : `${goalProgress * -1} over`}
                     </SummeryGoal>
@@ -48,6 +58,16 @@ class SummeryView extends React.Component {
 
                         {this.props.entries.length === 0 && (
                             <CenteredText>No current earnings for the week</CenteredText>
+                        )}
+                    </View>
+                )}
+
+                {this.props.summeryType === 'category' && (
+                    <View>
+                        <SummerySubtitle>Category earnings</SummerySubtitle>
+
+                        {this.props.entries.length === 0 && (
+                            <CenteredText>No current earnings for the category</CenteredText>
                         )}
                     </View>
                 )}
@@ -73,7 +93,7 @@ class SummeryView extends React.Component {
     }
 }
 
-function mapStateToProps({categories, entries, settings}, {week, summeryType, navigation}) {
+function mapStateToProps({categories, entries, settings}, {week, summeryType, navigation: {state: {params}}, categoryID}) {
     switch (summeryType) {
         case 'weekly':
             const weekData = filterByWeek(entries, week);
@@ -86,8 +106,6 @@ function mapStateToProps({categories, entries, settings}, {week, summeryType, na
             };
 
         case 'daily':
-            const {params} = navigation.state;
-
             return {
                 categories,
                 entries: filterByDay(DateTime.fromISO(params.date), entries),
@@ -99,7 +117,14 @@ function mapStateToProps({categories, entries, settings}, {week, summeryType, na
                 categories,
                 entries,
                 goal: settings.goals.daily
-            }
+            };
+
+        case 'category':
+            return {
+                categories,
+                category: categories.find(category => category.id === categoryID),
+                entries: filterByDay(DateTime.fromISO(params.date), entries.filter(entry => entry.category === categoryID))
+            };
     }
 }
 

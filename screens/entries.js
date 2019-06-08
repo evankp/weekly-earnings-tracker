@@ -8,7 +8,7 @@ import {DateTime} from 'luxon';
 import {StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import * as Colors from "../utils/colors";
-import {sortByDate} from "../utils/helpers";
+import {sortByDate, getLocalDateTime} from "../utils/helpers";
 import {removeEntry} from "../redux/actions/entries";
 
 const EntryAmountDate = ({categories, entry, amount}) => {
@@ -21,7 +21,7 @@ const EntryAmountDate = ({categories, entry, amount}) => {
 
 const CategoryTitle = ({date}) => {
     return (
-        <Text>{date.toLocaleString()}</Text>
+        <Text>{getLocalDateTime(date.toISO())}</Text>
     )
 };
 

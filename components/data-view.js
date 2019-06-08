@@ -3,7 +3,7 @@ import {View, ScrollView} from "react-native";
 import {DateTime} from "luxon";
 import PropTypes from "prop-types";
 import {CenteredListItem} from "./custom-styling";
-import {getCategoryTotal} from "../utils/helpers";
+import {getCategoryTotal, getLocalDateTime} from "../utils/helpers";
 import * as Colors from "../utils/colors";
 
 const DataView = ({summeryType, entries, categories, navigation}) => {
@@ -16,6 +16,10 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           title={getCategoryTotal(category.id, entries)}
                                           description={category.title}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
+                                          onPress={() => navigation.navigate('CategorySummery', {
+                                              category: {id: category.id, title: category.title},
+                                              date: DateTime.local().toISO()
+                                          })}
                         />
                     ))}
                 </ScrollView>
@@ -40,9 +44,22 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                     {entries.map((entry, index) => (
                         <CenteredListItem key={entry.date}
                                           title={entry.amount.toFixed(2)}
-                                          description={DateTime.fromISO(entry.date).toLocaleString()}
+                                          description={getLocalDateTime(entry.date)}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                                          onLongPress={() => navigation.navigate('DayView', {date: entry.date})}
+                                          onPress={() => navigation.navigate('DayView', {date: entry.date})}
+                        />
+                    ))}
+                </ScrollView>
+            );
+
+        case 'category':
+            return (
+                <ScrollView style={{height: 382}}>
+                    {entries.map((entry, index) => (
+                        <CenteredListItem key={entry.date}
+                                          title={entry.amount.toFixed(2)}
+                                          description={getLocalDateTime(entry.date)}
+                                          style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
                         />
                     ))}
                 </ScrollView>

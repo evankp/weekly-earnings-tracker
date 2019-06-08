@@ -87,3 +87,11 @@ export function sortByDate(data, time = true, order = 'DESC') {
 
     return data.sort((a, b) => getDay(b.date).valueOf() - getDay(a.date).valueOf())
 }
+
+export function getLocalDateTime(date) {
+    if (DateTime.fromISO(date).startOf('day').valueOf() === DateTime.fromISO(date).valueOf()) {
+        return DateTime.fromISO(date).toLocaleString()
+    } else {
+        return DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_SHORT)
+    }
+}

@@ -6,20 +6,22 @@ import {StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import SummeryView from '../components/summery-view';
 
-export default class DayView extends React.Component {
+export default class CategorySummery extends React.Component {
     render() {
         const {navigation} = this.props;
+        const {category: {id, title}, date} = navigation.state.params;
 
         return (
             <Container>
-                <HeaderBar title="Daily Earnings" navigation={navigation} leftBack/>
+                <HeaderBar title={`${title} Earnings`} navigation={navigation} leftBack/>
                 <StyledContent>
                     <H1 style={{textAlign: 'center', marginBottom: 20, fontWeight: 'bold'}}>
-                        {DateTime.fromISO(navigation.state.params.date).toLocaleString()}
+                        {DateTime.fromISO(date).toLocaleString()}
                     </H1>
                     <SummeryView
-                        summeryType="daily"
+                        summeryType="category"
                         navigation={this.props.navigation}
+                        categoryID={id}
                     />
                 </StyledContent>
             </Container>

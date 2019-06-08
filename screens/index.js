@@ -9,3 +9,4 @@ export WeekView from './week-view';
 export Settings from './settings';
 export Goals from './goals';
 export DayView from './day-view';
+export CategorySummery from './category-summery';

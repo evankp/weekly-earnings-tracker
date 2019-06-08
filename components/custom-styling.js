@@ -17,10 +17,10 @@ const CenteredItemView = Styled(View)`
 
 const TouchableNative = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
 
-export const CenteredListItem = ({title, description, style, onLongPress}) => {
-    if (onLongPress) {
+export const CenteredListItem = ({title, description, style, onPress, onLongPress}) => {
+    if (onPress || onLongPress) {
         return (
-            <TouchableNative onLongPress={onLongPress}>
+            <TouchableNative onPress={onPress} onLongPress={onLongPress}>
                 <View style={[{alignItems: 'center', padding: 15}, style]}>
                     <H3>${title}</H3>
                     <Text style={{fontWeight: '100', color: Colors.grey}}>{description}</Text>
