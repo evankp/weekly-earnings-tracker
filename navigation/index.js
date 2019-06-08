@@ -2,6 +2,8 @@ import React from 'react';
 import {createAppContainer, createBottomTabNavigator, createStackNavigator} from 'react-navigation';
 import {Icon} from "native-base";
 
+import * as Colors from '../utils/colors'
+
 // Screens
 import * as Screens from '../screens'
 
@@ -28,7 +30,8 @@ const BottomTabNavigator = createBottomTabNavigator({
     tabBarOptions: {
         tabStyle: {
             backgroundColor: '#f6f6f6'
-        }
+        },
+        activeTintColor: Colors.blue
     },
     defaultNavigationOptions: ({navigation}) => ({
         tabBarIcon: ({ focused, horizontal, tintColor }) => {

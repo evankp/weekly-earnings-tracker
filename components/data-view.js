@@ -10,7 +10,7 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
     switch (summeryType) {
         case 'today':
             return (
-                <ScrollView style={{height: 428}}>
+                <ScrollView style={{height: 382}}>
                     {categories.map((category, index) => (
                         <CenteredListItem key={category.id}
                                           title={getCategoryTotal(category.id, entries)}
@@ -23,7 +23,7 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
 
         case 'daily':
             return (
-                <ScrollView style={{height: 428}}>
+                <ScrollView style={{height: 382}}>
                     {categories.map((category, index) => (
                         <CenteredListItem key={category.id}
                                           title={getCategoryTotal(category.id, entries, entries[0].date)}
@@ -36,7 +36,7 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
 
         case 'weekly':
             return (
-                <ScrollView style={{height: 428}}>
+                <ScrollView style={{height: 382}}>
                     {entries.map((entry, index) => (
                         <CenteredListItem key={entry.date}
                                           title={entry.amount.toFixed(2)}

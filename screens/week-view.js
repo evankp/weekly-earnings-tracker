@@ -44,11 +44,13 @@ export default class WeekView extends React.Component {
             <Container>
                 <HeaderBar title="Weekly Earnings" navigation={navigation} addRoute="AddEntry"/>
                 <StyledContent>
-                    {this.state.displayWeek !== currentWeek && (
-                        <TextButton centeredText color={Colors.blue} onPress={() => this.setWeek(currentWeek)}>
-                            <Text>Reset to current week</Text>
-                        </TextButton>
-                    )}
+                    {/*<View style={{height: 25}}>*/}
+                        {this.state.displayWeek !== currentWeek && (
+                            <TextButton centeredText color={Colors.blue} onPress={() => this.setWeek(currentWeek)}>
+                                <Text>Reset to current week</Text>
+                            </TextButton>
+                        )}
+                    {/*</View>*/}
                     <View style={{
                         flexDirection: 'row',
                         marginBottom: 20,
