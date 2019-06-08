@@ -40,8 +40,8 @@ export function getWeeklyTotal(data) {
     return weeklyEntries.reduce((a, b) => a + b.amount, 0).toFixed(2)
 }
 
-export function getCategoryTotal(id, entries, customWeek = null) {
-    const day = customWeek ? DateTime.fromISO(customWeek) : DateTime.local();
+export function getCategoryTotal(id, entries, customDay = null) {
+    const day = customDay ? DateTime.fromISO(customDay) : DateTime.local();
 
     const earningsCategory = entries.filter(listing => (
         (listing.category === id) && (getDay(listing.date).valueOf() === day.startOf('day').valueOf())

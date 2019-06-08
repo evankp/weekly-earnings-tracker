@@ -33,6 +33,10 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           title={getCategoryTotal(category.id, entries, entries[0].date)}
                                           description={category.title}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
+                                          onPress={() => navigation.navigate('CategorySummery', {
+                                              category: {id: category.id, title: category.title},
+                                              date: navigation.state.params.date
+                                          })}
                         />
                     ))}
                 </ScrollView>

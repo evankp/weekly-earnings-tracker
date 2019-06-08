@@ -36,7 +36,7 @@ class SummeryView extends React.Component {
                 return getDailyTotal(DateTime.fromISO(params.date), this.props.entries);
 
             case 'category':
-                return getCategoryTotal(this.props.categoryID, this.props.entries);
+                return getCategoryTotal(this.props.categoryID, this.props.entries, params.date);
         }
     };
 
@@ -57,7 +57,7 @@ class SummeryView extends React.Component {
                         <SummerySubtitle>Earnings Per Day</SummerySubtitle>
 
                         {this.props.entries.length === 0 && (
-                            <CenteredText>No current earnings for the week</CenteredText>
+                            <CenteredText>No earnings for the week</CenteredText>
                         )}
                     </View>
                 )}
@@ -67,7 +67,7 @@ class SummeryView extends React.Component {
                         <SummerySubtitle>Category earnings</SummerySubtitle>
 
                         {this.props.entries.length === 0 && (
-                            <CenteredText>No current earnings for the category</CenteredText>
+                            <CenteredText>No earnings for the category</CenteredText>
                         )}
                     </View>
                 )}
