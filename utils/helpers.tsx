@@ -5,7 +5,7 @@ export function generateID() {
     return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase()
 }
 
-export function getDay(date) {
+export function getDay(date: DateTime) {
     return DateTime.fromISO(date).startOf('day')
 }
 
@@ -24,20 +24,21 @@ export function getWeekRange(customWeek = null) {
     return {start, end}
 }
 
+
 export function filterByWeek(data, customWeek = null) {
     const {start, end} = getWeekRange(customWeek);
 
-    return data.filter(item => {
+    return data.filter((item:any) => {
         const itemDate = DateTime.fromISO(item.date).valueOf();
         return itemDate >= start && itemDate <= end
     })
 }
 
-export function getWeeklyTotal(data) {
+export function getWeeklyTotal(data: Array<object>): Number {
     const dataWeek = data.length > 0 ? DateTime.fromISO(data[0].date).startOf('week').toISO() : null;
     const weeklyEntries = filterByWeek(data, dataWeek);
 
-    return weeklyEntries.reduce((a, b) => a + b.amount, 0).toFixed(2)
+    return weeklyEntries.reduce((a: any, b: object) => a + b.amount, 0).toFixed(2)
 }
 
 export function getCategoryTotal(id, entries, customDay = null) {
