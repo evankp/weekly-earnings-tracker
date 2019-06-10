@@ -1,14 +1,14 @@
 import React from 'react'
-import {Text, View} from 'react-native'
+import {Text} from 'react-native'
 import {connect} from 'react-redux'
 import {Container, Toast} from 'native-base';
-import {IconButton, List} from "react-native-paper";
+import {List} from "react-native-paper";
 import {DateTime} from 'luxon';
 
-import {StyledContent} from "../components/custom-styling";
+import {EntryButtons, StyledContent} from "../components/custom-styling";
 import HeaderBar from '../components/header-bar';
 import * as Colors from "../utils/colors";
-import {sortByDate, getLocalDateTime} from "../utils/helpers";
+import {getLocalDateTime, sortByDate} from "../utils/helpers";
 import {removeEntry} from "../redux/actions/entries";
 
 const EntryAmountDate = ({categories, entry, amount}) => {
@@ -22,15 +22,6 @@ const EntryAmountDate = ({categories, entry, amount}) => {
 const CategoryTitle = ({date}) => {
     return (
         <Text>{getLocalDateTime(date.toISO())}</Text>
-    )
-};
-
-const EntryButtons = ({navigation, entry, deleteEntry, ...props}) => {
-    return (
-        <View style={{flexDirection: 'row'}}>
-            <IconButton icon='edit' onPress={() => navigation.navigate('EditEntry', {id: entry.id})}/>
-            <IconButton icon='delete' onPress={() => deleteEntry(entry.id)}/>
-        </View>
     )
 };
 
@@ -59,8 +50,7 @@ class Entries extends React.Component {
                                                            amount={entry.amount}/>}
                                    description={<CategoryTitle date={DateTime.fromISO(entry.date)}/>}
                                    style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                                   right={(props) => <EntryButtons navigation={this.props.navigation}
-                                                                   entry={entry} deleteEntry={this.deleteEntry} {...props}/>}
+                                   right={(props) => <EntryButtons entry={entry} deleteEntry={this.deleteEntry} {...props}/>}
                         />
                     ))}
                 </StyledContent>

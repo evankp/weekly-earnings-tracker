@@ -64,6 +64,8 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                                           title={entry.amount.toFixed(2)}
                                           description={getLocalDateTime(entry.date)}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
+                                          entry={entry}
+                                          showButtons
                         />
                     ))}
                 </ScrollView>
