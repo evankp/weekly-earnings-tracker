@@ -106,3 +106,15 @@ TextButton.propTypes = {
     centeredText: PropTypes.bool,
     color: PropTypes.string
 };
+
+export const NavigationView = Styled(View)`
+    flex-direction: row;
+    margin-bottom: 20;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const DayHeading = Styled(H2)`
+    text-align: center;
+    font-weight: bold;
+`;

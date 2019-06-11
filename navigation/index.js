@@ -11,7 +11,9 @@ import * as Screens from '../screens'
 const BottomTabNavigator = createBottomTabNavigator({
     Home: {
         screen: Screens.Home,
-
+        navigationOptions: {
+            title: 'Day'
+        }
     },
     WeekView: {
         screen: Screens.WeekView,
@@ -36,12 +38,11 @@ const BottomTabNavigator = createBottomTabNavigator({
     defaultNavigationOptions: ({navigation}) => ({
         tabBarIcon: ({ focused, horizontal, tintColor }) => {
             const {routeName} = navigation.state;
-            let iconName,
-                fontSize = 23;
+            let iconName;
 
             switch (routeName) {
                 case 'Home':
-                    iconName = focused ? 'home' : 'home-outline';
+                    iconName = 'calendar-today';
                     break;
 
                 case 'Settings':
@@ -49,18 +50,18 @@ const BottomTabNavigator = createBottomTabNavigator({
                     break;
 
                 case 'Entries':
-                    iconName = 'format-list-bulleted';
+                    iconName = 'history';
                     break;
 
                 case 'WeekView':
-                    iconName = 'currency-usd';
+                    iconName = 'calendar-range';
                     break;
 
                 default:
                     iconName = 'tab'
             }
 
-            return <Icon type="MaterialCommunityIcons" name={iconName} style={{color: tintColor, fontSize: fontSize}}/>
+            return <Icon type="MaterialCommunityIcons" name={iconName} style={{color: tintColor, fontSize: 23}}/>
         }
     })
 });

@@ -18,25 +18,22 @@ import {CenteredText, SummeryGoal, SummerySubtitle, SummeryTotal} from "./custom
 class SummeryView extends React.Component {
     static propTypes = {
         week: PropTypes.string,
-        summeryType: PropTypes.oneOf(['daily', 'weekly', 'today', 'category']).isRequired,
+        summeryType: PropTypes.oneOf(['daily', 'weekly', 'category']).isRequired,
         navigation: PropTypes.object.isRequired,
         categoryID: PropTypes.string
     };
 
     getTotal = () => {
-        const {navigation: {state: {params}}} = this.props;
+        const date = this.props.navigation.getParam('date', DateTime.local().startOf('day').toISO);
         switch (this.props.summeryType) {
             case 'weekly':
                 return getWeeklyTotal(this.props.entries);
 
-            case 'today':
-                return getDailyTotal(DateTime.local(), this.props.entries);
-
             case 'daily':
-                return getDailyTotal(DateTime.fromISO(params.date), this.props.entries);
+                return getDailyTotal(DateTime.fromISO(date), this.props.entries);
 
             case 'category':
-                return getCategoryTotal(this.props.categoryID, this.props.entries, params.date);
+                return getCategoryTotal(this.props.categoryID, this.props.entries, date);
         }
     };
 
@@ -72,7 +69,7 @@ class SummeryView extends React.Component {
                     </View>
                 )}
 
-                {['daily', 'today'].includes(this.props.summeryType) && (
+                {this.props.summeryType === 'daily' && (
                     <View>
                         <SummerySubtitle>Categories</SummerySubtitle>
 
@@ -93,7 +90,8 @@ class SummeryView extends React.Component {
     }
 }
 
-function mapStateToProps({categories, entries, settings}, {week, summeryType, navigation: {state: {params}}, categoryID}) {
+function mapStateToProps({categories, entries, settings}, {week, summeryType, navigation, categoryID}) {
+    const date = navigation.getParam('date', DateTime.local().startOf('day').toISO());
     switch (summeryType) {
         case 'weekly':
             const weekData = filterByWeek(entries, week);
@@ -108,14 +106,7 @@ function mapStateToProps({categories, entries, settings}, {week, summeryType, na
         case 'daily':
             return {
                 categories,
-                entries: filterByDay(DateTime.fromISO(params.date), entries),
-                goal: settings.goals.daily
-            };
-
-        case 'today':
-            return {
-                categories,
-                entries,
+                entries: filterByDay(DateTime.fromISO(date), entries),
                 goal: settings.goals.daily
             };
 
@@ -123,7 +114,7 @@ function mapStateToProps({categories, entries, settings}, {week, summeryType, na
             return {
                 categories,
                 category: categories.find(category => category.id === categoryID),
-                entries: filterByDay(DateTime.fromISO(params.date), entries.filter(entry => entry.category === categoryID))
+                entries: filterByDay(DateTime.fromISO(date), entries.filter(entry => entry.category === categoryID))
             };
     }
 }

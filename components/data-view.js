@@ -8,34 +8,17 @@ import * as Colors from "../utils/colors";
 
 const DataView = ({summeryType, entries, categories, navigation}) => {
     switch (summeryType) {
-        case 'today':
-            return (
-                <ScrollView style={{height: 382}}>
-                    {categories.map((category, index) => (
-                        <CenteredListItem key={category.id}
-                                          title={getCategoryTotal(category.id, entries)}
-                                          description={category.title}
-                                          style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
-                                          onPress={() => navigation.navigate('CategorySummery', {
-                                              category: {id: category.id, title: category.title},
-                                              date: DateTime.local().toISO()
-                                          })}
-                        />
-                    ))}
-                </ScrollView>
-            );
-
         case 'daily':
             return (
                 <ScrollView style={{height: 382}}>
                     {categories.map((category, index) => (
                         <CenteredListItem key={category.id}
-                                          title={getCategoryTotal(category.id, entries, entries[0].date)}
+                                          title={getCategoryTotal(category.id, entries, navigation.getParam('date', DateTime.local().toISO))}
                                           description={category.title}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
                                           onPress={() => navigation.navigate('CategorySummery', {
                                               category: {id: category.id, title: category.title},
-                                              date: navigation.state.params.date
+                                              date: navigation.getParam('date', DateTime.local().startOf('day').toISO)
                                           })}
                         />
                     ))}

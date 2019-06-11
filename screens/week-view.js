@@ -4,7 +4,7 @@ import {Container, H2} from 'native-base';
 import {IconButton} from "react-native-paper";
 import {DateTime} from 'luxon';
 
-import {StyledContent, CenteredText, TextButton} from "../components/custom-styling";
+import {StyledContent, DayHeading, TextButton, NavigationView} from "../components/custom-styling";
 import * as Colors from '../utils/colors'
 import HeaderBar from '../components/header-bar';
 import {getWeekRange,} from "../utils/helpers";
@@ -20,8 +20,8 @@ export default class WeekView extends React.Component {
         return `${start.toLocaleString()} - ${end.toLocaleString()}`
     };
 
-    setWeek = (week) => {
-        this.setState({displayWeek: week})
+    resetWeek = () => {
+        this.setState({displayWeek: DateTime.local().startOf('week').toISO()})
     };
 
     plusWeek = () => {
@@ -38,31 +38,23 @@ export default class WeekView extends React.Component {
 
     render() {
         const {navigation} = this.props;
-        const currentWeek = DateTime.local().startOf('week').toISO();
 
         return (
             <Container>
                 <HeaderBar title="Weekly Earnings" navigation={navigation} addRoute="AddEntry"/>
                 <StyledContent>
-                    {/*<View style={{height: 25}}>*/}
-                        {this.state.displayWeek !== currentWeek && (
-                            <TextButton centeredText color={Colors.blue} onPress={() => this.setWeek(currentWeek)}>
-                                <Text>Reset to current week</Text>
-                            </TextButton>
-                        )}
-                    {/*</View>*/}
-                    <View style={{
-                        flexDirection: 'row',
-                        marginBottom: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
+                    {this.state.displayWeek !== DateTime.local().startOf('week').toISO() && (
+                        <TextButton centeredText color={Colors.blue} onPress={() => this.resetWeek()}>
+                            <Text>Reset to current week</Text>
+                        </TextButton>
+                    )}
+                    <NavigationView>
                         <IconButton icon="keyboard-arrow-left" onPress={this.minusWeek} size={28}/>
-                        <H2 style={{textAlign: 'center', fontWeight: 'bold'}}>
+                        <DayHeading>
                             {this.getWeek()}
-                        </H2>
+                        </DayHeading>
                         <IconButton icon="keyboard-arrow-right" onPress={this.plusWeek} size={28}/>
-                    </View>
+                    </NavigationView>
                     <SummeryView week={this.state.displayWeek} summeryType="weekly" navigation={navigation}/>
                 </StyledContent>
             </Container>
