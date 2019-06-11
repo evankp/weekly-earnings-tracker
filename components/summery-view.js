@@ -24,7 +24,7 @@ class SummeryView extends React.Component {
     };
 
     getTotal = () => {
-        const date = this.props.navigation.getParam('date', DateTime.local().startOf('day').toISO);
+        const date = this.props.navigation.getParam('date', DateTime.local().startOf('day').toISO());
         switch (this.props.summeryType) {
             case 'weekly':
                 return getWeeklyTotal(this.props.entries);

@@ -13,12 +13,13 @@ const DataView = ({summeryType, entries, categories, navigation}) => {
                 <ScrollView style={{height: 382}}>
                     {categories.map((category, index) => (
                         <CenteredListItem key={category.id}
-                                          title={getCategoryTotal(category.id, entries, navigation.getParam('date', DateTime.local().toISO))}
+                                          title={getCategoryTotal(category.id, entries,
+                                              navigation.getParam('date', DateTime.local().startOf('day').toISO()))}
                                           description={category.title}
                                           style={{backgroundColor: (index % 2) === 0 ? Colors.lightGrey : Colors.white}}
                                           onPress={() => navigation.navigate('CategorySummery', {
                                               category: {id: category.id, title: category.title},
-                                              date: navigation.getParam('date', DateTime.local().startOf('day').toISO)
+                                              date: navigation.getParam('date', DateTime.local().startOf('day').toISO())
                                           })}
                         />
                     ))}
