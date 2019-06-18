@@ -14,9 +14,9 @@ import {addEntry} from "../redux/actions/entries";
 class AddEntry extends React.Component {
     state = {
         id: generateID(),
-        category: this.props.categories.length >= 1 ? this.props.categories[0].id : 0,
+        category: this.props.navigation.getParam('category', this.props.categories.length >= 1 ? this.props.categories[0].id : 0),
         amount: 0,
-        date: DateTime.local()
+        date: this.props.navigation.getParam('date', DateTime.local())
     };
 
     changeState = (state, value) => {

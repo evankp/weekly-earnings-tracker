@@ -13,7 +13,13 @@ export default class CategorySummery extends React.Component {
 
         return (
             <Container>
-                <HeaderBar title={`${title} Earnings`} navigation={navigation} leftBack/>
+                <HeaderBar
+                    title={`${title} Earnings`}
+                    navigation={navigation}
+                    addRoute="AddEntry"
+                    addRouteParams={{category: id, date}}
+                    leftBack
+                />
                 <StyledContent>
                     <H1 style={{textAlign: 'center', marginBottom: 20, fontWeight: 'bold'}}>
                         {DateTime.fromISO(date).toLocaleString()}

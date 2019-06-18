@@ -10,8 +10,22 @@ export default class HeaderBar extends React.Component {
         title: PropTypes.string.isRequired,
         navigation: PropTypes.object.isRequired,
         addRoute: PropTypes.string,
+        addRouteParams: PropTypes.object,
         leftBack: PropTypes.bool
     };
+
+    static defaultProps = {
+        addRouteParams: {}
+    };
+
+    static singlePageRoutes = [
+        'AddEntry',
+        'EditCategory',
+        'AddCategory',
+        'Settings',
+        'Goals',
+        'DayView'
+    ];
 
     render() {
         const {navigation} = this.props;
@@ -30,9 +44,9 @@ export default class HeaderBar extends React.Component {
                 <Title>{this.props.title}</Title>
                 </Body>
 
-                {!(includes(['AddEntry', 'EditCategory', 'AddCategory', 'Settings', 'Goals', 'DayView'], navigation.state.routeName)) && (
+                {!(includes(HeaderBar.singlePageRoutes, navigation.state.routeName)) && (
                     <Right>
-                        <Button onPress={() => navigation.navigate(this.props.addRoute)} transparent>
+                        <Button onPress={() => navigation.navigate(this.props.addRoute, this.props.addRouteParams)} transparent>
                             <Icon name="plus" type="MaterialCommunityIcons" style={{fontSize: 25}}/>
                         </Button>
                     </Right>
