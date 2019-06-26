@@ -1,10 +1,11 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import {connect} from 'react-redux';
 import {Container} from 'native-base';
-import {List} from "react-native-paper";
-import {withNavigation} from 'react-navigation'
+import {List} from 'react-native-paper';
+import {withNavigation} from 'react-navigation';
+import PropTypes from 'prop-types';
 
-import {StyledContent} from "../components/custom-styling";
+import {StyledContent} from '../components/custom-styling';
 import HeaderBar from '../components/header-bar';
 
 const SettingsLink = withNavigation((props) => {
@@ -17,39 +18,49 @@ const SettingsLink = withNavigation((props) => {
             onPress={() => props.navigation.navigate(props.destination)}
             style={props.style}
         />
-    )
+    );
 });
 
-class Settings extends React.Component {
-    render() {
-        const {navigation} = this.props;
+SettingsLink.propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    destination: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    style: PropTypes.object
+};
 
-        return (
-            <Container>
-                <HeaderBar title="Settings" navigation={navigation}/>
-                <StyledContent>
-                    <SettingsLink
-                        title="Categories"
-                        destination="Categories"
-                        icon="list"
-                    />
-                    <SettingsLink
-                        title="Goals"
-                        description="How much you want to earn"
-                        destination="Goals"
-                        icon="playlist-add-check"
-                    />
-                </StyledContent>
-            </Container>
-        )
-    }
-}
+const Settings = (props) => {
+    return (
+        <Container>
+            <HeaderBar title="Settings"/>
+            <StyledContent>
+                <SettingsLink
+                    title="Categories"
+                    destination="Categories"
+                    icon="list"
+                />
+                <SettingsLink
+                    title="Goals"
+                    description="How much you want to earn"
+                    destination="Goals"
+                    icon="playlist-add-check"
+                />
+                <SettingsLink
+                    title="Data Options"
+                    description="Pull data from database, update database, etc."
+                    destination="DataOptions"
+                    icon="sync"
+                />
+            </StyledContent>
+        </Container>
+    );
+};
 
 function mapStateToProps({categories, entries}) {
     return {
         categories,
         entries
-    }
+    };
 }
 
-export default connect(mapStateToProps)(Settings)
+export default connect(mapStateToProps)(Settings);

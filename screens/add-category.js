@@ -4,7 +4,6 @@ import {Button, TextInput} from "react-native-paper";
 import {connect} from 'react-redux';
 
 import {StyledContent} from "../components/custom-styling";
-import * as Colors from '../utils/colors';
 import {generateID} from "../utils/helpers";
 import HeaderBar from '../components/header-bar';
 import {addCategory} from "../redux/actions/categories";
@@ -31,7 +30,7 @@ class AddCategory extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Add Category" navigation={this.props.navigation} leftBack/>
+                <HeaderBar title="Add Category" leftBack/>
                 <StyledContent>
                         <Label>Add New Category</Label>
                         <TextInput mode="outlined" value={this.state.title}

@@ -1,4 +1,4 @@
-import {ADD_SETTING, EDIT_SETTING, REMOVE_SETTING} from "../actions/settings";
+import {ADJUST_SETTING, REMOVE_SETTING} from "../actions/settings";
 import omit from 'lodash/omit'
 
 const defaultState = {
@@ -10,13 +10,7 @@ const defaultState = {
 
 export default function settings(state = defaultState, action) {
     switch (action.type) {
-        case ADD_SETTING:
-            return {
-                ...state,
-                [action.key]: action.setting
-            };
-
-        case EDIT_SETTING:
+        case ADJUST_SETTING:
             return {
               ...state,
               [action.setting]: action.value

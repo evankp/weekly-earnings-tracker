@@ -1,18 +1,9 @@
-export const ADD_SETTING = 'ADD_SETTING';
-export const EDIT_SETTING = 'EDIT_SETTING';
+export const ADJUST_SETTING = 'ADJUST_SETTING';
 export const REMOVE_SETTING = 'REMOVE_SETTING';
 
-export function addSetting(key, setting) {
+export function adjustSetting(setting, value) {
     return {
-        type: ADD_SETTING,
-        key,
-        setting
-    }
-}
-
-export function editSetting(setting, value) {
-    return {
-        type: EDIT_SETTING,
+        type: ADJUST_SETTING,
         setting,
         value
     }

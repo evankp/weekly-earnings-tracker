@@ -10,3 +10,4 @@ export Settings from './settings';
 export Goals from './goals';
 export DayView from './day-view';
 export CategorySummery from './category-summery';
+export DataOptions from './data-options';

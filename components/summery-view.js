@@ -3,6 +3,7 @@ import {View} from "react-native";
 import {DateTime} from "luxon";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import {withNavigation} from 'react-navigation';
 
 import DataView from './data-view';
 import {
@@ -19,7 +20,6 @@ class SummeryView extends React.Component {
     static propTypes = {
         week: PropTypes.string,
         summeryType: PropTypes.oneOf(['daily', 'weekly', 'category']).isRequired,
-        navigation: PropTypes.object.isRequired,
         categoryID: PropTypes.string
     };
 
@@ -119,4 +119,4 @@ function mapStateToProps({categories, entries, settings}, {week, summeryType, na
     }
 }
 
-export default connect(mapStateToProps)(SummeryView)
+export default withNavigation(connect(mapStateToProps)(SummeryView))

@@ -1,12 +1,71 @@
 import _ from 'lodash';
 import {DateTime} from 'luxon';
+import {Toast} from 'native-base';
+import * as env from '../env-variables';
 
 export function generateID() {
-    return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase()
+    return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
 }
 
 export function getDay(date) {
-    return DateTime.fromISO(date).startOf('day')
+    return DateTime.fromISO(date).startOf('day');
+}
+
+function handleAPIError(res) {
+    const data = res.json();
+
+    if (data.error) throw data.error;
+
+    return data;
+}
+
+function errorHandle(err) {
+    Toast.show({
+        text: `Error: ${err}`,
+        buttonText: 'Close'
+    })
+}
+
+const API_URL = 'https://us-central1-weekly-earnings-backend.cloudfunctions.net/api';
+
+export function getAPIData(user) {
+    return fetch(`${API_URL}/${user}/data`, {
+        headers: {
+            Authorization: `Basic ${env.BACKEND_TOKEN}`
+        }
+    })
+        .then(handleAPIError)
+        .catch(errorHandle);
+}
+
+export function overWriteAPIData(data, user) {
+    return fetch(`${API_URL}/${user}/init`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Basic ${env.BACKEND_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: {
+            data
+        }
+    })
+        .then(handleAPIError)
+        .catch(errorHandle);
+}
+
+export function addToDatabase(category, data, user) {
+    return fetch(`${API_URL}/${user}/add/${category}`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Basic ${env.BACKEND_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: {
+            data
+        }
+    })
+        .then(handleAPIError)
+        .catch(errorHandle)
 }
 
 export function getWeekRange(customWeek = null) {
@@ -21,7 +80,7 @@ export function getWeekRange(customWeek = null) {
         end = DateTime.local().endOf('week');
     }
 
-    return {start, end}
+    return {start, end};
 }
 
 export function filterByWeek(data, customWeek = null) {
@@ -29,15 +88,15 @@ export function filterByWeek(data, customWeek = null) {
 
     return data.filter(item => {
         const itemDate = DateTime.fromISO(item.date).valueOf();
-        return itemDate >= start && itemDate <= end
-    })
+        return itemDate >= start && itemDate <= end;
+    });
 }
 
 export function getWeeklyTotal(data) {
     const dataWeek = data.length > 0 ? DateTime.fromISO(data[0].date).startOf('week').toISO() : null;
     const weeklyEntries = filterByWeek(data, dataWeek);
 
-    return weeklyEntries.reduce((a, b) => a + b.amount, 0).toFixed(2)
+    return weeklyEntries.reduce((a, b) => a + b.amount, 0).toFixed(2);
 }
 
 export function getCategoryTotal(id, entries, customDay) {
@@ -47,17 +106,17 @@ export function getCategoryTotal(id, entries, customDay) {
         (listing.category === id) && (getDay(listing.date).valueOf() === day.startOf('day').valueOf())
     ));
 
-    return earningsCategory.reduce((a, b) => a + b.amount, 0).toFixed(2)
+    return earningsCategory.reduce((a, b) => a + b.amount, 0).toFixed(2);
 }
 
 export function getDailyTotal(date, entries) {
     const earningsDay = filterByDay(date, entries);
 
-    return earningsDay.reduce((a, b) => a + b.amount, 0).toFixed(2)
+    return earningsDay.reduce((a, b) => a + b.amount, 0).toFixed(2);
 }
 
 export function filterByDay(date, entries) {
-    return entries.filter(entry => DateTime.fromISO(entry.date).hasSame(date, 'day'))
+    return entries.filter(entry => DateTime.fromISO(entry.date).hasSame(date, 'day'));
 }
 
 export const filterAndJoinByDay = _.flow([
@@ -75,23 +134,23 @@ export const filterAndJoinByDay = _.flow([
 export function sortByDate(data, time = true, order = 'DESC') {
     if (time) {
         if (order === 'ASC') {
-            return data.sort((a, b) => DateTime.fromISO(a.date).valueOf() - DateTime.fromISO(b.date).valueOf())
+            return data.sort((a, b) => DateTime.fromISO(a.date).valueOf() - DateTime.fromISO(b.date).valueOf());
         }
 
-        return data.sort((a, b) => DateTime.fromISO(b.date).valueOf() - DateTime.fromISO(a.date).valueOf())
+        return data.sort((a, b) => DateTime.fromISO(b.date).valueOf() - DateTime.fromISO(a.date).valueOf());
     }
 
     if (order === 'ASC') {
-        return data.sort((a, b) => getDay(a.date).valueOf() - getDay(b.date).valueOf())
+        return data.sort((a, b) => getDay(a.date).valueOf() - getDay(b.date).valueOf());
     }
 
-    return data.sort((a, b) => getDay(b.date).valueOf() - getDay(a.date).valueOf())
+    return data.sort((a, b) => getDay(b.date).valueOf() - getDay(a.date).valueOf());
 }
 
 export function getLocalDateTime(date) {
     if (DateTime.fromISO(date).startOf('day').valueOf() === DateTime.fromISO(date).valueOf()) {
-        return DateTime.fromISO(date).toLocaleString()
+        return DateTime.fromISO(date).toLocaleString();
     } else {
-        return DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_SHORT)
+        return DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_SHORT);
     }
 }

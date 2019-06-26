@@ -8,14 +8,12 @@ import SummeryView from '../components/summery-view';
 
 export default class CategorySummery extends React.Component {
     render() {
-        const {navigation} = this.props;
         const {category: {id, title}, date} = navigation.state.params;
 
         return (
             <Container>
                 <HeaderBar
                     title={`${title} Earnings`}
-                    navigation={navigation}
                     addRoute="AddEntry"
                     addRouteParams={{category: id, date}}
                     leftBack

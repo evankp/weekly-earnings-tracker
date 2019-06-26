@@ -9,7 +9,7 @@ import * as Colors from '../utils/colors';
 import {generateID} from "../utils/helpers";
 import HeaderBar from '../components/header-bar';
 import {addCategory} from "../redux/actions/categories";
-import {editSetting} from "../redux/actions/settings";
+import {adjustSetting} from "../redux/actions/settings";
 
 class Goals extends React.Component {
     state = {
@@ -21,7 +21,7 @@ class Goals extends React.Component {
     };
 
     submit = () => {
-        this.props.dispatch(editSetting('goals', {...this.state}));
+        this.props.dispatch(adjustSetting('goals', {...this.state}));
         this.props.navigation.goBack();
         Toast.show({
             text: 'Saved Goals',
@@ -32,7 +32,7 @@ class Goals extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Add Category" navigation={this.props.navigation} leftBack/>
+                <HeaderBar title="Add Category" leftBack/>
                 <StyledContent>
                     <Label>Daily Goal</Label>
                     <NumberInput value={this.state.daily}

@@ -2,13 +2,13 @@ import React from 'react'
 import {Body, Button, Header, Icon, Left, Right, Title} from 'native-base';
 import PropTypes from 'prop-types'
 import includes from 'lodash/includes'
+import {withNavigation} from 'react-navigation';
 
 import * as Colors from '../utils/colors'
 
-export default class HeaderBar extends React.Component {
+class HeaderBar extends React.Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
-        navigation: PropTypes.object.isRequired,
         addRoute: PropTypes.string,
         addRouteParams: PropTypes.object,
         leftBack: PropTypes.bool
@@ -24,7 +24,8 @@ export default class HeaderBar extends React.Component {
         'AddCategory',
         'Settings',
         'Goals',
-        'DayView'
+        'DayView',
+        'DataOptions'
     ];
 
     render() {
@@ -55,3 +56,5 @@ export default class HeaderBar extends React.Component {
         )
     }
 }
+
+export default withNavigation(HeaderBar)

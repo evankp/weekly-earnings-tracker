@@ -1,4 +1,4 @@
-import {ADD_CATEGORY, EDIT_CATEGORY, REMOVE_CATEGORY} from "../actions/categories";
+import {ADD_CATEGORY, EDIT_CATEGORY, INIT_CATEGORIES, REMOVE_CATEGORY} from '../actions/categories';
 
 export default function (state = [], action) {
     switch (action.type) {
@@ -20,6 +20,9 @@ export default function (state = [], action) {
                     title: action.title
                 }
             });
+
+        case INIT_CATEGORIES:
+            return action.categories;
 
         default:
             return state

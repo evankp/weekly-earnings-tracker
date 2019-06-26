@@ -1,27 +1,27 @@
-import React from 'react'
-import {Container, H1, H2} from 'native-base';
+import React from 'react';
+import {Container} from 'native-base';
 import {DateTime} from 'luxon';
-import Styled from 'styled-components';
+import {connect} from 'react-redux';
 
-import {NavigationView, StyledContent, DayHeading, TextButton} from "../components/custom-styling";
+import {NavigationView, StyledContent, DayHeading, TextButton} from '../components/custom-styling';
 import HeaderBar from '../components/header-bar';
-import SummeryView from "../components/summery-view";
-import {IconButton} from "react-native-paper";
-import * as Colors from "../utils/colors";
-import {Text} from "react-native";
+import SummeryView from '../components/summery-view';
+import {IconButton} from 'react-native-paper';
+import * as Colors from '../utils/colors';
+import {Text} from 'react-native';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
     state = {
         day: DateTime.local().startOf('day').toISO()
     };
 
     getDay = () => {
-        return DateTime.fromISO(this.state.day).toLocaleString()
+        return DateTime.fromISO(this.state.day).toLocaleString();
     };
 
     resetDay = () => {
         this.props.navigation.setParams({date: DateTime.local().startOf('day').toISO()});
-        this.setState({day: DateTime.local().startOf('day').toISO()})
+        this.setState({day: DateTime.local().startOf('day').toISO()});
     };
 
     minusDay = () => {
@@ -30,7 +30,7 @@ export default class Home extends React.Component {
             .toISO();
 
         this.props.navigation.setParams({date: newDate});
-        this.setState({day: newDate})
+        this.setState({day: newDate});
     };
 
     plusDay = () => {
@@ -39,15 +39,13 @@ export default class Home extends React.Component {
             .toISO();
 
         this.props.navigation.setParams({date: newDate});
-        this.setState({day: newDate})
+        this.setState({day: newDate});
     };
 
     render() {
-        const {navigation} = this.props;
-
         return (
             <Container>
-                <HeaderBar title="Daily Earnings" navigation={navigation} addRoute="AddEntry"/>
+                <HeaderBar title="Daily Earnings" addRoute="AddEntry"/>
                 <StyledContent>
                     {this.state.day !== DateTime.local().startOf('day').toISO() && (
                         <TextButton centeredText color={Colors.blue} onPress={() => this.resetDay()}>
@@ -64,10 +62,11 @@ export default class Home extends React.Component {
 
                     <SummeryView
                         summeryType="daily"
-                        navigation={navigation}
                     />
                 </StyledContent>
             </Container>
-        )
+        );
     }
 }
+
+export default connect(({settings}) => ({settings}))(Home);

@@ -8,11 +8,9 @@ import SummeryView from '../components/summery-view';
 
 export default class DayView extends React.Component {
     render() {
-        const {navigation} = this.props;
-
         return (
             <Container>
-                <HeaderBar title="Daily Earnings" navigation={navigation} leftBack/>
+                <HeaderBar title="Daily Earnings" leftBack/>
                 <StyledContent>
                     <H1 style={{textAlign: 'center', marginBottom: 20, fontWeight: 'bold'}}>
                         {DateTime.fromISO(navigation.state.params.date).toLocaleString()}

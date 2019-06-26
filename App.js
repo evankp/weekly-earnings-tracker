@@ -10,7 +10,7 @@ import {DefaultTheme, Provider as PaperProvider} from "react-native-paper";
 import {store, persistor} from './redux/configure-store'
 import AppNavigator from './navigation'
 
-import * as Colors from './utils/colors'
+import * as Colors from './utils/colors';
 
 const StatusBarBackground = Styled(View)`
     background-color: #000;
@@ -23,7 +23,7 @@ const theme = {
         ...DefaultTheme.colors,
         primary: Colors.black
     }
-}
+};
 
 export default class App extends React.Component {
     state = {

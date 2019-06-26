@@ -37,7 +37,7 @@ class Entries extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Entry History" navigation={this.props.navigation} addRoute="AddEntry"/>
+                <HeaderBar title="Entry History" addRoute="AddEntry"/>
                 <StyledContent>
                     {this.props.entries.length === 0 && (
                         <Text style={{textAlign: 'center'}}>

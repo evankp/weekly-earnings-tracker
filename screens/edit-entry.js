@@ -31,7 +31,7 @@ class EditEntry extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Edit Entry" navigation={this.props.navigation} leftBack/>
+                <HeaderBar title="Edit Entry" leftBack/>
                 <StyledContent>
                     <Form>
                         <Label>Date</Label>

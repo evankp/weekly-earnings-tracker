@@ -8,7 +8,7 @@ import {StyledContent} from "../components/custom-styling";
 import * as Colors from '../utils/colors';
 import HeaderBar from '../components/header-bar';
 import NumberInput from "../components/number-input";
-import {generateID} from "../utils/helpers";
+import {generateID} from '../utils/helpers';
 import {addEntry} from "../redux/actions/entries";
 
 class AddEntry extends React.Component {
@@ -23,9 +23,10 @@ class AddEntry extends React.Component {
         this.setState({[state]: value})
     };
 
-    submit = () => {
+    submit = async () => {
         this.props.dispatch(addEntry(this.state));
         this.props.navigation.goBack();
+        // TODO: Add to database (holding off till user system on database)
         Toast.show({
             text: 'Entry added',
             buttonText: 'Close'
@@ -35,7 +36,7 @@ class AddEntry extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Add Entry" navigation={this.props.navigation} leftBack/>
+                <HeaderBar title="Add Entry" leftBack/>
                 <StyledContent>
                     <Form>
                         <Label>Date</Label>

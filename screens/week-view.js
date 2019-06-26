@@ -37,11 +37,9 @@ export default class WeekView extends React.Component {
     };
 
     render() {
-        const {navigation} = this.props;
-
         return (
             <Container>
-                <HeaderBar title="Weekly Earnings" navigation={navigation} addRoute="AddEntry"/>
+                <HeaderBar title="Weekly Earnings" addRoute="AddEntry"/>
                 <StyledContent>
                     {this.state.displayWeek !== DateTime.local().startOf('week').toISO() && (
                         <TextButton centeredText color={Colors.blue} onPress={() => this.resetWeek()}>
@@ -55,7 +53,7 @@ export default class WeekView extends React.Component {
                         </DayHeading>
                         <IconButton icon="keyboard-arrow-right" onPress={this.plusWeek} size={28}/>
                     </NavigationView>
-                    <SummeryView week={this.state.displayWeek} summeryType="weekly" navigation={navigation}/>
+                    <SummeryView week={this.state.displayWeek} summeryType="weekly"/>
                 </StyledContent>
             </Container>
         )

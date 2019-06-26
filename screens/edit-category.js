@@ -31,7 +31,7 @@ class EditCategory extends React.Component {
     render() {
         return (
             <Container>
-                <HeaderBar title="Edit Category" navigation={this.props.navigation} leftBack/>
+                <HeaderBar title="Edit Category" leftBack/>
                 <StyledContent>
                         <Label>Change category name</Label>
                         <TextInput mode="outlined" value={this.state.title}
