@@ -1,4 +1,4 @@
-import {removeFromDatabase} from '../../utils/helpers';
+import {addToDatabase, removeFromDatabase} from '../../utils/helpers';
 
 export const ADD_ENTRY = 'ADD_ENTRY';
 export const REMOVE_ENTRY = 'REMOVE_ENTRY';
@@ -10,14 +10,14 @@ export function addEntry(entry) {
     return {
         type: ADD_ENTRY,
         entry
-    }
+    };
 }
 
 export function removeEntry(id) {
     return {
         type: REMOVE_ENTRY,
         id
-    }
+    };
 }
 
 export function editEntry(id, entry) {
@@ -25,28 +25,35 @@ export function editEntry(id, entry) {
         type: EDIT_ENTRY,
         id,
         entry
-    }
+    };
 }
 
 export function initEntries(entries) {
     return {
         type: INIT_ENTRIES,
         entries
-    }
+    };
 }
 
 export function clearCategory(id) {
     return {
         type: CLEAR_CATEGORY,
         id
-    }
+    };
 }
 
-export const deleteEntry = (entry, useDatabase, user) => dispatch => {
+export const submitEntry = (entry, user, useDatabase) => dispatch => {
+    dispatch(addEntry(entry));
+
+    if (useDatabase) {
+        addToDatabase('entries', entry, user, () => removeEntry(entry.id))
+    }
+};
+
+export const deleteEntry = (entry, user, useDatabase) => dispatch => {
     dispatch(removeEntry(entry.id));
 
     if (useDatabase) {
-        removeFromDatabase('entries', entry.id, user)
-            .then(result => result.error ? addEntry(entry) : null)
+        removeFromDatabase('entries', entry.id, user, () => addEntry(entry))
     }
 };

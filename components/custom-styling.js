@@ -52,7 +52,7 @@ export const CenteredListItem = connect(({settings}) => ({user: settings.user, u
             {props.showButtons && (
                 <EntryButtons
                     entry={props.entry}
-                    deleteEntry={() => props.dispatch(deleteEntry(props.entry, props.useDatabase, props.user))}
+                    deleteEntry={() => props.dispatch(deleteEntry(props.entry, props.user, props.useDatabase))}
                     style={{marginLeft: 'auto'}}
                 />
             )}

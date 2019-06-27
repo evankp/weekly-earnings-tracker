@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 import {Container, DatePicker, Form, Label, Picker, Toast} from 'native-base';
-import {Button} from "react-native-paper";
+import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {DateTime} from 'luxon';
 
-import {StyledContent} from "../components/custom-styling";
+import {StyledContent} from '../components/custom-styling';
 import * as Colors from '../utils/colors';
 import HeaderBar from '../components/header-bar';
-import NumberInput from "../components/number-input";
-import {addToDatabase, generateID} from '../utils/helpers';
-import {addEntry} from "../redux/actions/entries";
+import NumberInput from '../components/number-input';
+import {generateID} from '../utils/helpers';
+import {submitEntry} from '../redux/actions/entries';
 
 class AddEntry extends React.Component {
     state = {
@@ -24,12 +24,8 @@ class AddEntry extends React.Component {
     };
 
     submit = async () => {
-        this.props.dispatch(addEntry(this.state));
+        this.props.dispatch(submitEntry(this.state, this.props.user, this.props.useDatabase));
         this.props.navigation.goBack();
-
-        if (this.props.useDatabase) {
-            await addToDatabase('entries', this.state, this.props.user);
-        }
 
         Toast.show({
             text: 'Entry added',

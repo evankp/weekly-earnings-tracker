@@ -29,17 +29,20 @@ function errorHandle(err) {
 
 const API_URL ='https://us-central1-weekly-earnings-backend.cloudfunctions.net/api';
 
-export function getAPIData(user) {
+export function getAPIData(user, errorCallback) {
     return fetch(`${API_URL}/${user}/data`, {
         headers: {
             Authorization: `Basic ${env.BACKEND_TOKEN}`
         }
     })
         .then(handleAPIError)
-        .catch(errorHandle);
+        .catch(err => {
+            errorHandle(err);
+            if (errorCallback) errorCallback(err)
+        })
 }
 
-export function overWriteAPIData(data, user) {
+export function overWriteAPIData(data, user, errorCallback) {
     Toast.show({text: 'Posting data'});
     return fetch(`${API_URL}/${user}/init`, {
         method: 'POST',
@@ -51,10 +54,13 @@ export function overWriteAPIData(data, user) {
     })
         .then(handleAPIError)
         .then(() => Toast.show({text: 'Data posted'}))
-        .catch(errorHandle);
+        .catch(err => {
+            errorHandle(err);
+            if (errorCallback) errorCallback(err)
+        })
 }
 
-export function addToDatabase(category, data, user) {
+export function addToDatabase(category, data, user, errorCallback) {
     return fetch(`${API_URL}/${user}/add/${category}`, {
         method: 'POST',
         headers: {
@@ -64,10 +70,13 @@ export function addToDatabase(category, data, user) {
         body: JSON.stringify({data: data})
     })
         .then(handleAPIError)
-        .catch(errorHandle)
+        .catch(err => {
+            errorHandle(err);
+            if (errorCallback) errorCallback(err)
+        })
 }
 
-export function removeFromDatabase(category, id, user) {
+export function removeFromDatabase(category, id, user, errorCallback) {
     return fetch(`${API_URL}/${user}/remove/${category}/${id}`, {
         method: 'DELETE',
         headers: {
@@ -75,7 +84,10 @@ export function removeFromDatabase(category, id, user) {
         }
     })
         .then(handleAPIError)
-        .catch(errorHandle)
+        .catch(err => {
+            errorHandle(err);
+            if (errorCallback) errorCallback(err)
+        })
 }
 
 export function getWeekRange(customWeek = null) {
