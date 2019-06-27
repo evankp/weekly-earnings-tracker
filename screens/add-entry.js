@@ -8,7 +8,7 @@ import {StyledContent} from "../components/custom-styling";
 import * as Colors from '../utils/colors';
 import HeaderBar from '../components/header-bar';
 import NumberInput from "../components/number-input";
-import {generateID} from '../utils/helpers';
+import {addToDatabase, generateID} from '../utils/helpers';
 import {addEntry} from "../redux/actions/entries";
 
 class AddEntry extends React.Component {
@@ -26,7 +26,11 @@ class AddEntry extends React.Component {
     submit = async () => {
         this.props.dispatch(addEntry(this.state));
         this.props.navigation.goBack();
-        // TODO: Add to database (holding off till user system on database)
+
+        if (this.props.useDatabase) {
+            await addToDatabase('entries', this.state, this.props.user);
+        }
+
         Toast.show({
             text: 'Entry added',
             buttonText: 'Close'
@@ -71,9 +75,11 @@ class AddEntry extends React.Component {
     }
 }
 
-function mapStateToProps({categories}) {
+function mapStateToProps({categories, settings}) {
     return {
-        categories
+        categories,
+        useDatabase: settings.databaseSync,
+        user: settings.user
     }
 }
 export default connect(mapStateToProps)(AddEntry)

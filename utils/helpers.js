@@ -22,11 +22,12 @@ function handleAPIError(res) {
 function errorHandle(err) {
     Toast.show({
         text: `Error: ${err}`,
-        buttonText: 'Close'
+        buttonText: 'Close',
+        duration: 8000
     })
 }
 
-const API_URL = 'https://us-central1-weekly-earnings-backend.cloudfunctions.net/api';
+const API_URL ='https://us-central1-weekly-earnings-backend.cloudfunctions.net/api';
 
 export function getAPIData(user) {
     return fetch(`${API_URL}/${user}/data`, {
@@ -39,17 +40,17 @@ export function getAPIData(user) {
 }
 
 export function overWriteAPIData(data, user) {
+    Toast.show({text: 'Posting data'});
     return fetch(`${API_URL}/${user}/init`, {
         method: 'POST',
         headers: {
             Authorization: `Basic ${env.BACKEND_TOKEN}`,
             'Content-Type': 'application/json'
         },
-        body: {
-            data
-        }
+        body: JSON.stringify({data: data})
     })
         .then(handleAPIError)
+        .then(() => Toast.show({text: 'Data posted'}))
         .catch(errorHandle);
 }
 
@@ -60,8 +61,17 @@ export function addToDatabase(category, data, user) {
             Authorization: `Basic ${env.BACKEND_TOKEN}`,
             'Content-Type': 'application/json'
         },
-        body: {
-            data
+        body: JSON.stringify({data: data})
+    })
+        .then(handleAPIError)
+        .catch(errorHandle)
+}
+
+export function removeFromDatabase(category, id, user) {
+    return fetch(`${API_URL}/${user}/remove/${category}/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Basic ${env.BACKEND_TOKEN}`,
         }
     })
         .then(handleAPIError)

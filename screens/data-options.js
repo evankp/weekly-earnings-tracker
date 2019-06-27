@@ -3,7 +3,6 @@ import {View} from 'react-native';
 import {Container, Label, Toast} from 'native-base';
 import {Button, Checkbox} from 'react-native-paper';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import Styled from 'styled-components';
 
 import {StyledContent} from '../components/custom-styling';
@@ -13,13 +12,13 @@ import {initCategories} from '../redux/actions/categories';
 import {initEntries} from '../redux/actions/entries';
 import {adjustSetting} from '../redux/actions/settings';
 
-async function getInitData(dispatch) {
+async function getInitData(dispatch, user) {
     Toast.show({
         text: 'Retrieving Data',
         buttonText: 'Close'
     });
 
-    const data = await getAPIData();
+    const data = await getAPIData(user);
 
     dispatch(initCategories(data.categories));
     dispatch(initEntries(data.entries));
@@ -40,16 +39,17 @@ const Section = Styled(View)`
 
 class DataOptions extends React.Component {
     state = {
-      useDatabase: false
+        useDatabase: this.props.databaseSync
     };
 
     submitSettingChange = (setting, value) => {
-      this.props.dispatch(adjustSetting(setting, value))
+        this.props.dispatch(adjustSetting(setting, value));
     };
 
     checkboxOnChange = () => {
-        this.setState((state) => ({useDatabase: !state.useDatabase}));
-        this.submitSettingChange('databaseSync', this.state.useDatabase)
+        this.setState((state) => ({useDatabase: !state.useDatabase}), () => {
+            this.submitSettingChange('databaseSync', this.state.useDatabase);
+        });
     };
 
     render() {
@@ -59,25 +59,26 @@ class DataOptions extends React.Component {
             <Container>
                 <HeaderBar title="Data Options" leftBack/>
                 <StyledContent>
-                    <Section>
+                    <Section style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Checkbox
-                            status={this.state.useDatabase ? 'checked': 'unchecked'}
+                            status={this.state.useDatabase ? 'checked' : 'unchecked'}
                             onPress={() => this.checkboxOnChange()}
                         />
+                        <Label>Sync data to database/web</Label>
                     </Section>
                     <Section>
                         <ButtonLabel>Get Data from Database (will overwrite data)</ButtonLabel>
                         <Button mode='contained'
-                                onPress={() => getInitData(dispatch)}
-                                disabled={!user}>
+                                onPress={() => getInitData(dispatch, user)}
+                                disabled={!user || !this.state.useDatabase}>
                             Get Data
                         </Button>
                     </Section>
                     <Section>
                         <ButtonLabel>Push Data to database</ButtonLabel>
                         <Button mode='contained'
-                                onPress={() => overWriteAPIData({entries: entries, categories: categories})}
-                                disabled={!user}>
+                                onPress={() => overWriteAPIData({entries: entries, categories: categories}, user)}
+                                disabled={!user || !this.state.useDatabase}>
                             Overwrite Data
                         </Button>
                     </Section>
@@ -91,7 +92,8 @@ function mapStateToProps({entries, categories, settings}) {
     return {
         entries,
         categories,
-        user: settings.user
+        user: settings.user,
+        databaseSync: settings.databaseSync
     };
 }
 

@@ -5,6 +5,7 @@ import {List} from 'react-native-paper';
 import {withNavigation} from 'react-navigation';
 import PropTypes from 'prop-types';
 
+import {USER} from '../env-variables';
 import {StyledContent} from '../components/custom-styling';
 import HeaderBar from '../components/header-bar';
 
@@ -45,21 +46,24 @@ const Settings = (props) => {
                     destination="Goals"
                     icon="playlist-add-check"
                 />
-                <SettingsLink
-                    title="Data Options"
-                    description="Pull data from database, update database, etc."
-                    destination="DataOptions"
-                    icon="sync"
-                />
+                {(props.user && props.user === USER) && (
+                    <SettingsLink
+                        title="Data Options"
+                        description="Pull data from database, update database, etc."
+                        destination="DataOptions"
+                        icon="sync"
+                    />
+                )}
             </StyledContent>
         </Container>
     );
 };
 
-function mapStateToProps({categories, entries}) {
+function mapStateToProps({categories, entries, settings}) {
     return {
         categories,
-        entries
+        entries,
+        user: settings.user
     };
 }
 

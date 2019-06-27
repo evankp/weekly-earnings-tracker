@@ -8,7 +8,7 @@ import SummeryView from '../components/summery-view';
 
 export default class CategorySummery extends React.Component {
     render() {
-        const {category: {id, title}, date} = navigation.state.params;
+        const {category: {id, title}, date} = this.props.navigation.state.params;
 
         return (
             <Container>

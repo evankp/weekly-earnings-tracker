@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 
 import * as Colors from '../utils/colors';
 import {IconButton} from "react-native-paper";
-import {removeEntry} from "../redux/actions/entries";
+import {deleteEntry, removeEntry} from '../redux/actions/entries';
 
 export const StyledContent = Styled(Content)`
     margin: 20px 15px;
@@ -26,11 +26,11 @@ export const EntryButtons = withNavigation((props) => {
     return (
         <View style={[{flexDirection: 'row'}, style]}>
             <IconButton icon='edit' onPress={() => navigation.navigate('EditEntry', {id: entry.id})}/>
-            <IconButton icon='delete' onPress={() => deleteEntry(entry.id)}/>
+            <IconButton icon='delete' onPress={() => deleteEntry()}/>
         </View>
     )
 });
-export const CenteredListItem = connect()((props) => {
+export const CenteredListItem = connect(({settings}) => ({user: settings.user, useDatabase: settings.databaseSync}))((props) => {
     const ContentStyles = StyleSheet.create({
         container: {
             flexDirection: 'row',
@@ -52,7 +52,7 @@ export const CenteredListItem = connect()((props) => {
             {props.showButtons && (
                 <EntryButtons
                     entry={props.entry}
-                    deleteEntry={(id) => props.dispatch(removeEntry(id))}
+                    deleteEntry={() => props.dispatch(deleteEntry(props.entry, props.useDatabase, props.user))}
                     style={{marginLeft: 'auto'}}
                 />
             )}

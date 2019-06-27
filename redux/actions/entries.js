@@ -1,3 +1,5 @@
+import {removeFromDatabase} from '../../utils/helpers';
+
 export const ADD_ENTRY = 'ADD_ENTRY';
 export const REMOVE_ENTRY = 'REMOVE_ENTRY';
 export const CLEAR_CATEGORY = 'CLEAR_CATEGORY';
@@ -39,3 +41,12 @@ export function clearCategory(id) {
         id
     }
 }
+
+export const deleteEntry = (entry, useDatabase, user) => dispatch => {
+    dispatch(removeEntry(entry.id));
+
+    if (useDatabase) {
+        removeFromDatabase('entries', entry.id, user)
+            .then(result => result.error ? addEntry(entry) : null)
+    }
+};
