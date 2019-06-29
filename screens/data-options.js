@@ -7,10 +7,10 @@ import Styled from 'styled-components';
 
 import {StyledContent} from '../components/custom-styling';
 import HeaderBar from '../components/header-bar';
-import {getAPIData, overWriteAPIData} from '../utils/helpers';
 import {initCategories} from '../redux/actions/categories';
 import {initEntries} from '../redux/actions/entries';
 import {adjustSetting} from '../redux/actions/settings';
+import {getAPIData, overWriteAPIData} from '../utils/api';
 
 async function getInitData(dispatch, user) {
     Toast.show({
