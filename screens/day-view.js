@@ -13,7 +13,7 @@ export default class DayView extends React.Component {
                 <HeaderBar title="Daily Earnings" leftBack/>
                 <StyledContent>
                     <H1 style={{textAlign: 'center', marginBottom: 20, fontWeight: 'bold'}}>
-                        {DateTime.fromISO(navigation.state.params.date).toLocaleString()}
+                        {DateTime.fromISO(this.props.navigation.state.params.date).toLocaleString()}
                     </H1>
                     <SummeryView
                         summeryType="daily"
